@@ -41,10 +41,11 @@ namespace ST10203070_PROG6221_POE
                 //Saving unit of measurement in varibale unit
                 string unit = Console.ReadLine();
 
-                //Creating new object of Ingredient class with current name, quantity, and unit
+                //Creating new object of Ingredient class to hold current name, quantity, and unit
                 Ingredient ingredient = new Ingredient(name, quantity, unit);
                 //Saving ingredient object to ingredients array
                 recipe.AddIngredient(ingredient);
+
             }
 
 
