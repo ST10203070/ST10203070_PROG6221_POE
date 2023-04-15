@@ -68,7 +68,7 @@ namespace ST10203070_PROG6221_POE
         public void ScaleRecipe(double factor) 
         {
             //For loop to scale each ingredient quantity in ingredients array by scallingFactor
-            for (int i = 0; i < program.numIngredients; i++) 
+            for (int i = 0; i < ingredients.Length; i++) 
             {
                 ingredients[i].Quantity *= factor;
             }
@@ -78,7 +78,7 @@ namespace ST10203070_PROG6221_POE
         public void ResetQuantities()
         {
             //For loop to resetl each ingredient quantity in ingredients array to original quantity
-            for (int i = 0; i < program.numIngredients; i++)
+            for (int i = 0; i < ingredients.Length; i++)
             {
                 ingredients[i].Quantity = ingredients[i].OriginalQuantity;
             }

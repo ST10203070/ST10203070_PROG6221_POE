@@ -8,10 +8,12 @@ namespace ST10203070_PROG6221_POE
 {
     class Program
     {
+        //Variable holds number of ingredients
         public int numIngredients = 0;
+        //Varible holds number of steps
         public int numSteps = 0;
 
-        //Program constructor
+        //Program class constructor
         public Program() 
         {
             
@@ -119,7 +121,7 @@ namespace ST10203070_PROG6221_POE
                         //Calling ClearRecipe method
                         recipe.ClearRecipe();
                         //Statement confriming recipe cleared
-                        Console.WriteLine("Recipe cleared successfully");
+                        Console.WriteLine("\nRecipe cleared successfully");
                         break;
                     //Exit application
                     case 4:
