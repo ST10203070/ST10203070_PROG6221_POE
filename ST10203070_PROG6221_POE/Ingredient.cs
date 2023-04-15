@@ -8,9 +8,10 @@ namespace ST10203070_PROG6221_POE
 {
     class Ingredient
     {
-        //Varibales to hold name, quantity, and unit
+        //Varibales to hold name, quantity, original quantity, and unit
         public string Name { get; set; }
         public double Quantity { get; set; }
+        public double OriginalQuantity { get; set; }
         public string Unit { get; set; }
 
         //Ingredient constructor taking name, quantity, and unit as parameters 
@@ -18,6 +19,7 @@ namespace ST10203070_PROG6221_POE
         {
             Name = name;
             Quantity = quantity;
+            OriginalQuantity = quantity;
             Unit = unit;
         }
     }
