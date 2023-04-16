@@ -46,8 +46,8 @@ namespace ST10203070_PROG6221_POE
         public void DisplayRecipe() 
         {
             //Display recipe opening message
+            Console.WriteLine("\nRecipe details");
             Console.WriteLine("----------------------------------------");
-            Console.WriteLine("Recipe details:");
             Console.WriteLine("Ingredients:");
             //Printing ingredient name, quantity, and unit for each ingredient in ingredients array in loop
             foreach(var ingredient in ingredients) 

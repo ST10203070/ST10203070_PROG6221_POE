@@ -27,8 +27,13 @@ namespace ST10203070_PROG6221_POE
             //Creating object instance of Program
             var prog = new Program();
 
+            //Setting foreground colour to blue
+            Console.ForegroundColor = ConsoleColor.Blue;
             //Welcome message
-            Console.WriteLine("Welcome to recipe manager!");
+            Console.WriteLine("Welcome to recipe manager!", Console.ForegroundColor);
+            //Changing foreground colour to gray
+            Console.ForegroundColor = ConsoleColor.Gray;
+            Console.WriteLine("================================================================================");
             //Request for recipe details
             Console.WriteLine("Please enter details for new recipe");
             //Request for number of ingredients
@@ -80,6 +85,7 @@ namespace ST10203070_PROG6221_POE
             Console.WriteLine("\nRecipe added successfully");
             //Displaying the recipe added using DisplayRecipe method
             recipe.DisplayRecipe();
+            Console.WriteLine("================================================================================");
 
             //Boolean variable to keep while loop running
             bool run = true;
@@ -101,7 +107,7 @@ namespace ST10203070_PROG6221_POE
                     //Scale recipe
                     case 1:
                         //Getting scaling factor
-                        Console.WriteLine("Enter scalling factor (0.5, 2, or 3): ");
+                        Console.WriteLine("\nEnter scalling factor (0.5, 2, or 3): ");
                         //Saving scaling factor in variable scallingFactor
                         double scallingFactor = Convert.ToDouble(Console.ReadLine());
                         //Calling ScaleRecipe method with scallingFactor as argument
@@ -127,10 +133,11 @@ namespace ST10203070_PROG6221_POE
                     case 4:
                         //Setting run varible to false to exit while loop
                         run = false;
+                        Console.WriteLine("\nGoodbye!");
                         break;
                     //Default case for if the user enters an invalid choice
                     default:
-                        Console.WriteLine("Invalid choice. Please try again.");
+                        Console.WriteLine("\nInvalid choice. Please try again.");
                         break;
                 }
             }
