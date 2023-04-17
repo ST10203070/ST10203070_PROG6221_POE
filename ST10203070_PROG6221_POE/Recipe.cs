@@ -45,6 +45,8 @@ namespace ST10203070_PROG6221_POE
         //Method to display recipe
         public void DisplayRecipe() 
         {
+            //Changing foreground colour to blue for recipe display
+            Console.ForegroundColor = ConsoleColor.Blue;
             //Display recipe opening message
             Console.WriteLine("\nRecipe details");
             Console.WriteLine("----------------------------------------");
@@ -59,9 +61,11 @@ namespace ST10203070_PROG6221_POE
             Console.WriteLine("\nSteps:");
             for(int i = 0; i < steps.Length; i++) 
             {
-                Console.WriteLine($"{steps[i]}");
+                Console.WriteLine($"{(i + 1)}: {steps[i]}");
             }
             Console.WriteLine("----------------------------------------");
+            //Changing foreground colour back to gray
+            Console.ForegroundColor = ConsoleColor.Gray;
         }
 
         //Method to scale recipe

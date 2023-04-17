@@ -12,6 +12,8 @@ namespace ST10203070_PROG6221_POE
         public int numIngredients = 0;
         //Varible holds number of steps
         public int numSteps = 0;
+        //
+        public string clearConfirm = "";
 
         //Program class constructor
         public Program()
@@ -124,12 +126,22 @@ namespace ST10203070_PROG6221_POE
                         break;
                     //Clear recipe
                     case 3:
-                        //Calling ClearRecipe method
-                        recipe.ClearRecipe();
-                        //Statement confriming recipe cleared
-                        Console.WriteLine("\nRecipe cleared successfully\n");
-                        //Calling main method to enter new recipe
-                        Program.Main(args);
+                        //Getting user confirmation for recipe clear
+                        Console.WriteLine("Please confirm if you would like to clear the current recipe: Yes/No");
+                        prog.clearConfirm = Console.ReadLine();
+                        if (prog.clearConfirm.Equals("Yes", StringComparison.InvariantCultureIgnoreCase))
+                        {
+                            //Calling ClearRecipe method
+                            recipe.ClearRecipe();
+                            //Statement confriming recipe cleared
+                            Console.WriteLine("\nRecipe cleared successfully\n");
+                            //Calling main method to enter new recipe
+                            Program.Main(args);
+                        }
+                        else 
+                        {
+                            Console.WriteLine("\nRecipe has NOT been cleared");
+                        }
                         break;
                     //Exit application
                     case 4:
@@ -147,7 +159,7 @@ namespace ST10203070_PROG6221_POE
                         break;
                 }
                 //If statement to break from loop if user decides to clear and enter new recipe
-                if (choice == 3) 
+                if (choice == 3 && prog.clearConfirm.Equals("Yes", StringComparison.InvariantCultureIgnoreCase)) 
                 {
                     break;
                 }
