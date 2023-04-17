@@ -12,7 +12,7 @@ namespace ST10203070_PROG6221_POE
         public int numIngredients = 0;
         //Varible holds number of steps
         public int numSteps = 0;
-        //
+        //Variable holds users response to clearing recipe (Yes/No)
         public string clearConfirm = "";
 
         //Program class constructor
