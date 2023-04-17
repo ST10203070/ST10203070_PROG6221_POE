@@ -128,7 +128,9 @@ namespace ST10203070_PROG6221_POE
                     case 3:
                         //Getting user confirmation for recipe clear
                         Console.WriteLine("Please confirm if you would like to clear the current recipe: Yes/No");
+                        //Saving user response in clearConfirm variable
                         prog.clearConfirm = Console.ReadLine();
+                        //If statement to either clear recipe and add a new one or output recipe not cleared statement
                         if (prog.clearConfirm.Equals("Yes", StringComparison.InvariantCultureIgnoreCase))
                         {
                             //Calling ClearRecipe method
