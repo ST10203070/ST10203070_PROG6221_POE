@@ -33,7 +33,7 @@ namespace ST10203070_PROG6221_POE
             ingredients[ingredients.Length - 1] = ingredient;
         }
 
-        //Method to add step to steps array array
+        //Method to add step to steps array
         public void AddStep(string step)
         {
             //Resizing steps array to fit a new step
@@ -51,13 +51,13 @@ namespace ST10203070_PROG6221_POE
             Console.WriteLine("\nRecipe details");
             Console.WriteLine("----------------------------------------");
             Console.WriteLine("Ingredients:");
-            //Printing ingredient name, quantity, and unit for each ingredient in ingredients array in loop
+            //Using loop to print ingredient name, quantity, and unit for each ingredient in ingredients array
             foreach(var ingredient in ingredients) 
             {
                 Console.WriteLine($"{ingredient.Name}: {ingredient.Quantity} {ingredient.Unit}");
             }
 
-            //Printing each step from steps array in for loop
+            //Using loop to print each step from steps array
             Console.WriteLine("\nSteps:");
             for(int i = 0; i < steps.Length; i++) 
             {
@@ -81,7 +81,7 @@ namespace ST10203070_PROG6221_POE
         //Method to reset quantiies to default
         public void ResetQuantities()
         {
-            //For loop to resetl each ingredient quantity in ingredients array to original quantity
+            //For loop to reset each ingredient quantity in ingredients array to original quantity
             for (int i = 0; i < ingredients.Length; i++)
             {
                 ingredients[i].Quantity = ingredients[i].OriginalQuantity;
@@ -102,3 +102,4 @@ namespace ST10203070_PROG6221_POE
         }
     }
 }
+//---------------------------------------END OF FILE---------------------------------------//

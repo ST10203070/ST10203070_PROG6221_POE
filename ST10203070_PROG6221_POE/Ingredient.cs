@@ -8,7 +8,7 @@ namespace ST10203070_PROG6221_POE
 {
     class Ingredient
     {
-        //Varibales to hold name, quantity, original quantity, and unit
+        //Variables to hold name, quantity, original quantity, and unit
         public string Name { get; set; }
         public double Quantity { get; set; }
         public double OriginalQuantity { get; set; }
@@ -24,3 +24,4 @@ namespace ST10203070_PROG6221_POE
         }
     }
 }
+//---------------------------------------END OF FILE---------------------------------------//
