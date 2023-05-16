@@ -10,36 +10,46 @@ namespace ST10203070_PROG6221_POE
     {
         //Object of Program Class
         Program program = new Program();
-        //Declaring array of Ingredients class to store ingredients
-        private Ingredient[] ingredients;
-        //Declaring string array to store steps
-        private string[] steps;
+        //Declaring list of Ingredients class to store ingredients
+        private List<Ingredient> ingredients;
+        //Declaring string list to store steps
+        private List<string> steps;
 
-        //Recipe constructor used for creating ingredients and steps arrays
+        //Recipe constructor used for creating ingredients and steps lists
         public Recipe() 
         {
-            //Creating ingredients array
-            ingredients = new Ingredient[0];
-            //Creating steps array
-            steps = new string[0];
+            //Creating ingredients list
+            ingredients = new List<Ingredient>();
+            //Creating steps list
+            steps = new List<string>();
         }
 
         //Method to add ingredient object to Ingredient class array
         public void AddIngredient(Ingredient ingredient) 
         {
+            /*
             //Resizing ingredients array to fit a new ingredient object
             Array.Resize(ref ingredients, ingredients.Length +1);
             //Storing ingredient object into last index of ingredients array
             ingredients[ingredients.Length - 1] = ingredient;
+            */
+
+            //Adding ingredient object to ingredients list
+            ingredients.Add(ingredient);
         }
 
         //Method to add step to steps array
         public void AddStep(string step)
         {
+            /*
             //Resizing steps array to fit a new step
             Array.Resize(ref steps, steps.Length +1);
             //Storing step into last index of steps array
             steps[steps.Length - 1] = step;
+            */
+
+            //Adding step to steps list
+            steps.Add(step);
         }
 
         //Method to display recipe
@@ -51,15 +61,15 @@ namespace ST10203070_PROG6221_POE
             Console.WriteLine("\nRecipe details");
             Console.WriteLine("----------------------------------------");
             Console.WriteLine("Ingredients:");
-            //Using loop to print ingredient name, quantity, and unit for each ingredient in ingredients array
+            //Using loop to print ingredient name, quantity, and unit for each ingredient in ingredients list
             foreach(var ingredient in ingredients) 
             {
                 Console.WriteLine($"{ingredient.Name}: {ingredient.Quantity} {ingredient.Unit}");
             }
 
-            //Using loop to print each step from steps array
+            //Using loop to print each step from steps list
             Console.WriteLine("\nSteps:");
-            for(int i = 0; i < steps.Length; i++) 
+            for(int i = 0; i < steps.Count; i++) 
             {
                 Console.WriteLine($"{(i + 1)}: {steps[i]}");
             }
@@ -71,8 +81,8 @@ namespace ST10203070_PROG6221_POE
         //Method to scale recipe
         public void ScaleRecipe(double factor) 
         {
-            //For loop to scale each ingredient quantity in ingredients array by scallingFactor
-            for (int i = 0; i < ingredients.Length; i++) 
+            //For loop to scale each ingredient quantity in ingredients list by scallingFactor
+            for (int i = 0; i < ingredients.Count; i++) 
             {
                 ingredients[i].Quantity *= factor;
             }
@@ -81,8 +91,8 @@ namespace ST10203070_PROG6221_POE
         //Method to reset quantiies to default
         public void ResetQuantities()
         {
-            //For loop to reset each ingredient quantity in ingredients array to original quantity
-            for (int i = 0; i < ingredients.Length; i++)
+            //For loop to reset each ingredient quantity in ingredients list to original quantity
+            for (int i = 0; i < ingredients.Count; i++)
             {
                 ingredients[i].Quantity = ingredients[i].OriginalQuantity;
             }
@@ -91,6 +101,7 @@ namespace ST10203070_PROG6221_POE
         //Method to clear recipe
         public void ClearRecipe()
         {
+            /*
             //Setting numIngredients in Program class to zero
             program.numIngredients = 0;
             //Setting numSteps in Program class to zero
@@ -99,6 +110,12 @@ namespace ST10203070_PROG6221_POE
             ingredients = null;
             //Setting steps array to null
             steps = null;
+            */
+
+            //Clearing ingredients list
+            ingredients.Clear();
+            //Clearing steps list
+            steps.Clear();
         }
     }
 }
