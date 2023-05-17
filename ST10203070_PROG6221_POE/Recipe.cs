@@ -117,6 +117,12 @@ namespace ST10203070_PROG6221_POE
             //Clearing steps list
             steps.Clear();
         }
+
+        //Method to get ingredients
+        public List<Ingredient> GetIngredients() 
+        {
+            return ingredients;
+        }
     }
 }
 //---------------------------------------END OF FILE---------------------------------------//

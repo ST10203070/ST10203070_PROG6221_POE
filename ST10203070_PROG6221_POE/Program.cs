@@ -14,11 +14,23 @@ namespace ST10203070_PROG6221_POE
         public int numSteps = 0;
         //Variable holds users response to clearing recipe (Yes/No)
         public string clearConfirm = "";
+        //Declaring instance of Program class
+        public Program prog;
+        //Declaring instance of Recipe class
+        public Recipe recipe;
+        //
+        public delegate void RecipeExceededCaloriesEventHandler(string recipeName);
+        //Declaring Recipes List of Recipe class to store recipes
+        private List<Recipe> recipes;
+        //
+        private RecipeExceededCaloriesEventHandler notifyRecipeExceededCalories;
 
         //Program class constructor
         public Program()
         {
-
+            recipes = new List<Recipe>();
+            //
+            notifyRecipeExceededCalories += RecipeExceededCaloriesHandler;
         }
 
         //Main method
@@ -26,9 +38,18 @@ namespace ST10203070_PROG6221_POE
         {
             //Creating object of Recipe class
             Recipe recipe = new Recipe();
+
             //Creating object instance of Program
             var prog = new Program();
 
+            //Calling GetRecipeDetails method to get ingredients and steps from user
+            prog.GetRecipeDetails();
+
+            //Calling ActionsMenu method to get users next action (scaling recipe, resetting quantities, clearing recipe, or exiting)
+            prog.ActionsMenu();
+        }
+        public void GetRecipeDetails() 
+        {
             //Setting foreground colour to blue for welcome message
             Console.ForegroundColor = ConsoleColor.Blue;
             //Welcome message
@@ -38,6 +59,10 @@ namespace ST10203070_PROG6221_POE
             Console.WriteLine("================================================================================");
             //Request for recipe details
             Console.WriteLine("Please enter details for new recipe");
+            //Getting name of recipe
+            Console.WriteLine("Enter the name of the recipe: ");
+            //Saving recipe name in varibale recipeName
+            string recipeName = Console.ReadLine(); 
             //Request for number of ingredients
             Console.WriteLine("Enter the number of ingredients for this recipe: ");
             //Saving number of ingredients in variable numIngredients
@@ -60,10 +85,14 @@ namespace ST10203070_PROG6221_POE
                 Console.WriteLine("Unit of measurement: ");
                 //Saving unit of measurement in varibale unit
                 string unit = Console.ReadLine();
+                Console.WriteLine("Calories: ");
+                int calories = Convert.ToInt32(Console.ReadLine());
+                Console.WriteLine("Food group: ");
+                string foodGroup = Console.ReadLine();
 
-                //Creating new object of Ingredient class to hold current name, quantity, and unit
-                Ingredient ingredient = new Ingredient(name, quantity, unit);
-                //Saving ingredient object to ingredients array
+                //Creating new object of Ingredient class to hold current name, quantity, unit, calories, and foodGroup
+                Ingredient ingredient = new Ingredient(name, quantity, unit, calories, foodGroup);
+                //Saving ingredient object to ingredients list
                 recipe.AddIngredient(ingredient);
             }
 
@@ -82,13 +111,20 @@ namespace ST10203070_PROG6221_POE
                 //Adding description to steps array
                 recipe.AddStep(description);
             }
-
+            //
+            recipes.Add(recipe);
             //Confirmation of added recipe statement
-            Console.WriteLine("\nRecipe added successfully");
+            Console.WriteLine($"\nRecipe '{recipeName}' added successfully");
             //Displaying the recipe added using DisplayRecipe method
             recipe.DisplayRecipe();
             Console.WriteLine("================================================================================");
+            //
+            if (CalculateTotalCalories(recipe) > 300)
+                notifyRecipeExceededCalories(recipeName);
+        }
 
+        public void ActionsMenu() 
+        {
             //Boolean variable to keep while loop running
             bool run = true;
 
@@ -137,10 +173,12 @@ namespace ST10203070_PROG6221_POE
                             recipe.ClearRecipe();
                             //Statement confriming recipe cleared
                             Console.WriteLine("\nRecipe cleared successfully\n");
-                            //Calling main method to enter new recipe
-                            Program.Main(args);
+                            //Calling GetRecipeDetails method to enter new recipe
+                            prog.GetRecipeDetails();
+                            //Calling ActionsMenu to give user further options after having entered new recipe
+                            prog.ActionsMenu();
                         }
-                        else 
+                        else
                         {
                             Console.WriteLine("\nRecipe has NOT been cleared");
                         }
@@ -161,11 +199,30 @@ namespace ST10203070_PROG6221_POE
                         break;
                 }
                 //If statement to break from loop if user decides to clear and enter new recipe
-                if (choice == 3 && prog.clearConfirm.Equals("Yes", StringComparison.InvariantCultureIgnoreCase)) 
+                if (choice == 3 && prog.clearConfirm.Equals("Yes", StringComparison.InvariantCultureIgnoreCase))
                 {
                     break;
                 }
             }
+        }
+
+        //Method to calculate and return total calories
+        private int CalculateTotalCalories(Recipe recipe) 
+        {
+            int totalCalories = 0;
+            foreach (var ingredient in recipe.GetIngredients()) 
+            {
+                totalCalories += ingredient.Calories;
+            }
+            return totalCalories;   
+        }
+
+        //Method to notify user of exceeded calories in the recipe
+        private void RecipeExceededCaloriesHandler(string recipeName) 
+        {
+            Console.ForegroundColor= ConsoleColor.Red;
+            Console.WriteLine($"\nThe total calories of the recipe '{recipeName}' exceed 300");
+            Console.ForegroundColor= ConsoleColor.Gray;
         }
     }
 }
