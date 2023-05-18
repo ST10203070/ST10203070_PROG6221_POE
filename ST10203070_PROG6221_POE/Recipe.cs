@@ -14,18 +14,22 @@ namespace ST10203070_PROG6221_POE
         private List<Ingredient> ingredients;
         //Declaring string list to store steps
         private List<string> steps;
+        //Declaring Recipes List of Recipe class to store recipes
+        private List<Recipe> recipes;
 
         //Recipe constructor used for creating ingredients and steps lists
-        public Recipe() 
+        public Recipe()
         {
-            //Creating ingredients list
+            //Initializing ingredients list
             ingredients = new List<Ingredient>();
-            //Creating steps list
+            //Initializing steps list
             steps = new List<string>();
+            //Initializing list recipes of Recipe class
+            recipes = new List<Recipe>();
         }
 
-        //Method to add ingredient object to Ingredient class array
-        public void AddIngredient(Ingredient ingredient) 
+        //Method to add ingredient object to Ingredient class list
+        public void AddIngredient(Ingredient ingredient)
         {
             /*
             //Resizing ingredients array to fit a new ingredient object
@@ -38,7 +42,7 @@ namespace ST10203070_PROG6221_POE
             ingredients.Add(ingredient);
         }
 
-        //Method to add step to steps array
+        //Method to add step to steps list
         public void AddStep(string step)
         {
             /*
@@ -52,24 +56,30 @@ namespace ST10203070_PROG6221_POE
             steps.Add(step);
         }
 
+        //Method to add recipe to recipes list
+        public void AddRecipe(Recipe recipe) 
+        {
+            recipes.Add(recipe);
+        }
+
         //Method to display recipe
-        public void DisplayRecipe() 
+        public void DisplayRecipe(Program program)
         {
             //Changing foreground colour to blue for recipe display
             Console.ForegroundColor = ConsoleColor.Blue;
             //Display recipe opening message
-            Console.WriteLine("\nRecipe details");
+            Console.WriteLine($"\nRecipe {program.recipeName} details");
             Console.WriteLine("----------------------------------------");
             Console.WriteLine("Ingredients:");
             //Using loop to print ingredient name, quantity, and unit for each ingredient in ingredients list
-            foreach(var ingredient in ingredients) 
+            foreach (var ingredient in ingredients)
             {
-                Console.WriteLine($"{ingredient.Name}: {ingredient.Quantity} {ingredient.Unit}");
+                Console.WriteLine($"{ingredient.Name}: {ingredient.Quantity} {ingredient.Unit} \n\nCalories: {ingredient.Calories} \n\nFood group: {ingredient.FoodGroup}");
             }
 
             //Using loop to print each step from steps list
             Console.WriteLine("\nSteps:");
-            for(int i = 0; i < steps.Count; i++) 
+            for (int i = 0; i < steps.Count; i++)
             {
                 Console.WriteLine($"{(i + 1)}: {steps[i]}");
             }
@@ -79,10 +89,10 @@ namespace ST10203070_PROG6221_POE
         }
 
         //Method to scale recipe
-        public void ScaleRecipe(double factor) 
+        public void ScaleRecipe(double factor)
         {
             //For loop to scale each ingredient quantity in ingredients list by scallingFactor
-            for (int i = 0; i < ingredients.Count; i++) 
+            for (int i = 0; i < ingredients.Count; i++)
             {
                 ingredients[i].Quantity *= factor;
             }
@@ -119,9 +129,54 @@ namespace ST10203070_PROG6221_POE
         }
 
         //Method to get ingredients
-        public List<Ingredient> GetIngredients() 
+        public List<Ingredient> GetIngredients()
         {
             return ingredients;
+        }
+
+        //Method to display list of recipes in alphabetical order by name
+        public void DisplayRecipeList(Program program)
+        {
+            //Sorting recipes by list by recipeNmae in alphabetical order
+            var sortedRecipes = recipes.OrderBy(r => r.program.recipeName);
+            //Concatenating each recipeName and displaying it to the user
+            Console.WriteLine(string.Join(", ", sortedRecipes.Select(r => r.program.recipeName)));
+
+
+            /*
+            //Foreach loop to iterate over sorted recipes
+            foreach(var recipe in recipes)
+                {
+                //Changing foreground colour to blue for recipe display
+                Console.ForegroundColor = ConsoleColor.Blue;
+                //Display recipe opening message
+                Console.WriteLine($"\nRecipe {program.recipeName}:");
+                Console.WriteLine("----------------------------------------");
+                Console.WriteLine("Ingredients:");
+                //Using loop to print ingredient name, quantity, and unit for each ingredient in ingredients list
+                foreach (var ingredient in ingredients)
+                {
+                    Console.WriteLine($"{ingredient.Name}: {ingredient.Quantity} {ingredient.Unit} \n\nCalories: {ingredient.Calories} \n\nFood group: {ingredient.FoodGroup}");
+                }
+
+                //Using loop to print each step from steps list
+                Console.WriteLine("\nSteps:");
+                for (int i = 0; i < steps.Count; i++)
+                {
+                    Console.WriteLine($"{(i + 1)}: {steps[i]}");
+                }
+                Console.WriteLine("----------------------------------------");
+                //Changing foreground colour back to gray
+                Console.ForegroundColor = ConsoleColor.Gray;
+            }
+
+            */
+        }
+
+        //Method to display specific recipe based on recipeName
+        public void DisplaySpecificRecipe(Program program) 
+        {
+        
         }
     }
 }
