@@ -12,8 +12,8 @@ namespace ST10203070_PROG6221_POE
         private List<Ingredient> ingredients;
         //Declaring string list to store steps
         private List<string> steps;
-        //Declaring Recipes List of Recipe class to store recipes
-        private List<Recipe> recipes;
+        //Initializing Recipes List of Recipe class to store recipes
+        private static List<Recipe> recipes = new List<Recipe>();
         public int RecipeID { get; private set; }
         public string RecipeName { get; set; }
 
@@ -24,8 +24,6 @@ namespace ST10203070_PROG6221_POE
             ingredients = new List<Ingredient>();
             //Initializing steps list
             steps = new List<string>();
-            //Initializing list recipes of Recipe class
-            recipes = new List<Recipe>();
             RecipeID = recipeId;
             RecipeName = recipeName;
         }
@@ -56,11 +54,11 @@ namespace ST10203070_PROG6221_POE
             //Changing foreground colour to blue for recipe display
             Console.ForegroundColor = ConsoleColor.Blue;
             //Display recipe opening message
-            Console.WriteLine($"\nRecipe {RecipeName} details");
+            Console.WriteLine($"\nRecipe '{recipe.RecipeName}' details");
             Console.WriteLine("----------------------------------------");
             Console.WriteLine("Ingredients:");
             //Using loop to print ingredient name, quantity, unit, calories, and food group for each ingredient in ingredients list
-            foreach (var ingredient in ingredients)
+            foreach (var ingredient in recipe.ingredients)
             {
                 Console.WriteLine($"{ingredient.Name}: {ingredient.Quantity} {ingredient.Unit} \n\nCalories: {ingredient.Calories} \n\nFood group: {ingredient.FoodGroup}");
             }
@@ -69,7 +67,7 @@ namespace ST10203070_PROG6221_POE
 
             //Using loop to print each step from steps list
             Console.WriteLine("\nSteps:");
-            for (int i = 0; i < steps.Count; i++)
+            for (int i = 0; i < recipe.steps.Count; i++)
             {
                 Console.WriteLine($"{(i + 1)}: {steps[i]}");
             }
@@ -134,13 +132,15 @@ namespace ST10203070_PROG6221_POE
                     //Changing foreground colour to blue for recipe display
                     Console.ForegroundColor = ConsoleColor.Blue;
                     //Display recipe opening message
-                    Console.WriteLine($"\nRecipe {recipe.RecipeName} details");
+                    Console.WriteLine($"\nRecipe '{recipe.RecipeName}' details");
                     Console.WriteLine("----------------------------------------");
                     Console.WriteLine("Ingredients:");
                     foreach (Ingredient ingredient in recipe.ingredients)
                     {
-                        Console.WriteLine($"{ingredient.Name}: {ingredient.Quantity} {ingredient.Unit} \nCalories: {ingredient.Calories} \nFood group: {ingredient.FoodGroup}");
+                        Console.WriteLine($"{ingredient.Name}: {ingredient.Quantity} {ingredient.Unit} \n\nCalories: {ingredient.Calories} \n\nFood group: {ingredient.FoodGroup}");
                     }
+                    //Displaying total calories
+                    Console.WriteLine($"\nTotal Calories: {CalculateTotalCalories(recipe)}");
                     Console.WriteLine("\nSteps:");
                     for (int i = 0; i < recipe.steps.Count; i++)
                     {
@@ -166,8 +166,8 @@ namespace ST10203070_PROG6221_POE
         public double CalculateTotalCalories(Recipe recipe)
         {
             int totalCalories = 0;
-            //Foreach loop 
-            foreach (var ingredient in ingredients)
+            //Foreach loop to add calories of each ingredient to totalCalories
+            foreach (var ingredient in recipe.ingredients)
             {
                 totalCalories += ingredient.Calories;
             }

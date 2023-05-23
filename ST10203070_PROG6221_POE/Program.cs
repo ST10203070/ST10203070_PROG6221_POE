@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -13,7 +14,7 @@ namespace ST10203070_PROG6221_POE
         //Varible holds number of steps
         public int numSteps = 0;
         //Variable holds users response to clearing recipe (Yes/No)
-        public string clearConfirm = "";
+        public string? clearConfirm = null;
         //Declaring instance of Recipe class
         public Recipe recipe;
         //Variable holds the recipeIDCounter
@@ -26,6 +27,8 @@ namespace ST10203070_PROG6221_POE
         //Program class constructor
         public Program()
         {
+            //Initializing recipe field with default
+            recipe = new Recipe(recipeIDCounter, "");
             //Subscribing to the RecipeExceededCaloriesEvent by providing the event handler method
             RecipeExceededCaloriesEvent += RecipeExceededCaloriesHandler;
         }
@@ -40,11 +43,10 @@ namespace ST10203070_PROG6221_POE
             prog.GetRecipeDetails();
 
             //Calling ActionsMenu method to get users next action after having entered the first recipe
-            prog.ActionsMenu();
+            prog.ActionsMenu(prog.recipe);
         }
         public void GetRecipeDetails() 
         {
-
             //Setting foreground colour to blue for welcome message
             Console.ForegroundColor = ConsoleColor.Blue;
             //Welcome message
@@ -54,10 +56,21 @@ namespace ST10203070_PROG6221_POE
             Console.WriteLine("================================================================================");
             //Request for recipe details
             Console.WriteLine("Please enter details for new recipe");
-            //Getting name of recipe
-            Console.WriteLine("Enter the name of the recipe: ");
             //Saving recipe name in varibale recipeName
-            string recipeName = Console.ReadLine();
+            string? recipeName = null;
+            //Checking if recipe name entered is valid (not null)
+            while (string.IsNullOrEmpty(recipeName))
+            {
+                //Getting name of recipe
+                Console.WriteLine("Enter the name of the recipe: ");
+                //Saving name in varibale recipeName
+                recipeName = Console.ReadLine();
+
+                if (string.IsNullOrEmpty(recipeName))
+                {
+                    Console.WriteLine("Invalid recipe name. Please enter a valid recipe name.");
+                }
+            }
             //Creating new recipe object
             Recipe recipe = new Recipe(recipeIDCounter, recipeName);
             //Incrementing recipeIDCounter so each recipe has a unqiue ID
@@ -73,23 +86,54 @@ namespace ST10203070_PROG6221_POE
             {
                 //Asking for details of specific ingredient number
                 Console.WriteLine("Enter details for ingredient " + (i +1));
-                //Asking for ingredient name
-                Console.WriteLine("Name: ");
-                //Saving name in varibale name
-                string name = Console.ReadLine();
+                string? name = null;
+                //Checking if ingredeint name entered is valid (not null)
+                while (string.IsNullOrEmpty(name))
+                {
+                    //Asking for ingredient name
+                    Console.WriteLine("Name: ");
+                    //Saving name in varibale name
+                    name = Console.ReadLine();
+
+                    if (string.IsNullOrEmpty(name))
+                    {
+                        Console.WriteLine("Invalid ingredient name. Please enter a valid ingredient name.");
+                    }
+                }
                 //Asking for ingredient quantity
                 Console.WriteLine("Quantity: ");
                 //Saving quantity in varibale quantity
                 double quantity = Convert.ToDouble(Console.ReadLine());
-                //Asking for unit of measurement
-                Console.WriteLine("Unit of measurement: ");
-                //Saving unit of measurement in varibale unit
-                string unit = Console.ReadLine();
+                string? unit = null;
+                //Checking if unit entered is valid (not null)
+                while (string.IsNullOrEmpty(unit))
+                {
+                    //Asking for unit of measurement
+                    Console.WriteLine("Unit of measurement: ");
+                    //Saving unit of measurement in varibale unit
+                    unit = Console.ReadLine();
+
+                    if (string.IsNullOrEmpty(unit))
+                    {
+                        Console.WriteLine("Invalid unit of measurement. Please enter a valid unit.");
+                    }
+                }
                 Console.WriteLine("Calories: ");
                 int calories = Convert.ToInt32(Console.ReadLine());
-                Console.WriteLine("Food group: ");
-                string foodGroup = Console.ReadLine();
+                string? foodGroup = null;
+                //Checking if food group entered is valid (not null)
+                while (string.IsNullOrEmpty(foodGroup))
+                {
+                    //Asking for food group
+                    Console.WriteLine("Food group: ");
+                    //Saving food group in varibale foodGroup
+                    foodGroup = Console.ReadLine();
 
+                    if (string.IsNullOrEmpty(foodGroup))
+                    {
+                        Console.WriteLine("Invalid food group. Please enter a valid food group.");
+                    }
+                }
                 //Creating new object of Ingredient class to hold current name, quantity, unit, calories, and foodGroup
                 Ingredient ingredient = new Ingredient(name, quantity, unit, calories, foodGroup);
                 //Saving ingredient object to ingredients list
@@ -104,10 +148,20 @@ namespace ST10203070_PROG6221_POE
             //Getting and saving description for each step to steps array based on numSteps the user wants to enter
             for (int i = 0; i < this.numSteps; i++)
             {
-                //Getting description for steps sequentially
-                Console.WriteLine("Enter description for step " + (i+1) + ": ");
-                //Saving description to variable description
-                string description = Console.ReadLine();
+                string? description = null;
+                //Checking if step description entered is valid (not null)
+                while (string.IsNullOrEmpty(description))
+                {
+                    //Getting description for steps sequentially
+                    Console.WriteLine("Enter description for step " + (i+1) + ": ");
+                    //Saving description to variable description
+                    description = Console.ReadLine();
+
+                    if (string.IsNullOrEmpty(description))
+                    {
+                        Console.WriteLine("Invalid description. Please enter a valid description.");
+                    }
+                }
                 //Adding description to steps lists
                 recipe.AddStep(recipe, description);
             }
@@ -116,7 +170,7 @@ namespace ST10203070_PROG6221_POE
             recipe.AddRecipe(recipe);
             //If statement checking if total calories is over 300 and raising RecipeExceededCaloriesEvent by invoking the event handler RecipeExceededCaloriesHandler
             if (recipe.CalculateTotalCalories(recipe) > 300)
-                RecipeExceededCaloriesEvent?.Invoke(recipe.RecipeName, recipe.CalculateTotalCalories(recipe));
+                RecipeExceededCaloriesEvent?.Invoke(recipeName, recipe.CalculateTotalCalories(recipe));
             //Confirmation of added recipe statement
             Console.WriteLine($"\nRecipe '{recipeName}' added successfully");
             //Displaying the recipe added using DisplayRecipe method
@@ -124,7 +178,7 @@ namespace ST10203070_PROG6221_POE
             Console.WriteLine("================================================================================");
         }
 
-        public void ActionsMenu() 
+        public void ActionsMenu(Recipe recipe) 
         {
             //Boolean variable to keep while loop running
             bool run = true;
@@ -165,12 +219,22 @@ namespace ST10203070_PROG6221_POE
                         break;
                     //Clear recipe
                     case 3:
-                        //Getting user confirmation for recipe clear
-                        Console.WriteLine("Please confirm if you would like to clear the current recipe: Yes/No");
-                        //Saving user response in clearConfirm variable
-                        this.clearConfirm = Console.ReadLine();
+                        //Checking if response entered is valid (not null)
+                        while (string.IsNullOrEmpty(clearConfirm))
+                        {
+                            //Getting user confirmation for recipe clear
+                            Console.WriteLine("Please confirm if you would like to clear the current recipe: Yes/No");
+                            //Saving user response in clearConfirm variable
+                            clearConfirm = Console.ReadLine();
+
+                            if (string.IsNullOrEmpty(clearConfirm))
+                            {
+                                Console.WriteLine("Invalid response. Please enter a valid response (Yes/No).");
+                            }
+                        }
+                        
                         //If statement to either clear recipe and add a new one or output recipe not cleared statement
-                        if (this.clearConfirm.Equals("Yes", StringComparison.InvariantCultureIgnoreCase))
+                        if (clearConfirm.Equals("Yes", StringComparison.InvariantCultureIgnoreCase))
                         {
                             //Calling ClearRecipe method
                             recipe.ClearRecipe();
@@ -179,7 +243,7 @@ namespace ST10203070_PROG6221_POE
                             //Calling GetRecipeDetails method to enter new recipe
                             this.GetRecipeDetails();
                             //Calling ActionsMenu to give user further options after having entered new recipe
-                            this.ActionsMenu();
+                            this.ActionsMenu(this.recipe);
                         }
                         else
                         {
@@ -213,7 +277,7 @@ namespace ST10203070_PROG6221_POE
                         break;
                 }
                 //If statement to break from loop if user decides to clear and enter new recipe
-                if (choice == 3 && this.clearConfirm.Equals("Yes", StringComparison.InvariantCultureIgnoreCase))
+                if (choice == 3 && clearConfirm != null && clearConfirm.Equals("Yes", StringComparison.InvariantCultureIgnoreCase))
                 {
                     break;
                 }
