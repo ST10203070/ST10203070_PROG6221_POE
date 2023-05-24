@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,7 +19,7 @@ namespace ST10203070_PROG6221_POE
         //Declaring instance of Recipe class
         public Recipe recipe;
         //Variable holds the recipeIDCounter
-        int recipeIDCounter = 1;
+        static int recipeIDCounter = 1;
         //Declaring delegate specifying RecipeExceededCaloriesHandler method's signature. Delegate include recipeNmae and totalCalories as parameters
         public delegate void RecipeExceededCaloriesEventHandler(string recipeName, double totalCalories);        
         //Declaring event of delegate type
@@ -28,7 +29,7 @@ namespace ST10203070_PROG6221_POE
         public Program()
         {
             //Initializing recipe field with default
-            recipe = new Recipe(recipeIDCounter, "");
+            recipe = new Recipe(recipeIDCounter, " ");
             //Subscribing to the RecipeExceededCaloriesEvent by providing the event handler method
             RecipeExceededCaloriesEvent += RecipeExceededCaloriesHandler;
         }
@@ -39,13 +40,10 @@ namespace ST10203070_PROG6221_POE
             //Creating object instance of Program class
             Program prog = new Program();
 
-            //Calling GetRecipeDetails method to get ingredients and steps from user
-            prog.GetRecipeDetails();
-
-            //Calling ActionsMenu method to get users next action after having entered the first recipe
-            prog.ActionsMenu(prog.recipe);
+            //Calling GetRecipeDetails method to get ingredients and steps from user and return recipe object to be passed as an argument to Actionsmenu method
+            prog.ActionsMenu(prog.GetRecipeDetails());
         }
-        public void GetRecipeDetails() 
+        public Recipe GetRecipeDetails() 
         {
             //Setting foreground colour to blue for welcome message
             Console.ForegroundColor = ConsoleColor.Blue;
@@ -176,6 +174,8 @@ namespace ST10203070_PROG6221_POE
             //Displaying the recipe added using DisplayRecipe method
             recipe.DisplayRecipe(recipe);
             Console.WriteLine("================================================================================");
+            //Returning recipe object
+            return recipe;
         }
 
         public void ActionsMenu(Recipe recipe) 
@@ -206,7 +206,7 @@ namespace ST10203070_PROG6221_POE
                         //Saving scaling factor in variable scallingFactor
                         double scallingFactor = Convert.ToDouble(Console.ReadLine());
                         //Calling ScaleRecipe method with scallingFactor as argument
-                        recipe.ScaleRecipe(scallingFactor);
+                        recipe.ScaleRecipe(scallingFactor, recipe);
                         //Displaying scaled recipe
                         recipe.DisplayRecipe(recipe);
                         break;
@@ -240,10 +240,8 @@ namespace ST10203070_PROG6221_POE
                             recipe.ClearRecipe();
                             //Statement confriming recipe cleared
                             Console.WriteLine("\nRecipe cleared successfully\n");
-                            //Calling GetRecipeDetails method to enter new recipe
-                            this.GetRecipeDetails();
-                            //Calling ActionsMenu to give user further options after having entered new recipe
-                            this.ActionsMenu(this.recipe);
+                            //Calling GetRecipeDetails method to get ingredients and steps from user and return recipe object to be passed as an argument to Actionsmenu method
+                            this.ActionsMenu(this.GetRecipeDetails());
                         }
                         else
                         {

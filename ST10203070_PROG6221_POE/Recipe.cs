@@ -77,12 +77,12 @@ namespace ST10203070_PROG6221_POE
         }
 
         //Method to scale recipe
-        public void ScaleRecipe(double factor)
+        public void ScaleRecipe(double factor, Recipe recipe)
         {
             //For loop to scale each ingredient quantity in ingredients list by factor
-            for (int i = 0; i < ingredients.Count; i++)
+            foreach (Ingredient ingredient in recipe.ingredients)
             {
-                ingredients[i].Quantity *= factor;
+                ingredient.Quantity *= factor;
             }
         }
 
