@@ -97,12 +97,14 @@ namespace ST10203070_PROG6221_POE
         }
 
         //Method to clear recipe
-        public void ClearRecipe()
+        public void ClearRecipe(Recipe recipe)
         {
             //Clearing ingredients list
             ingredients.Clear();
             //Clearing steps list
             steps.Clear();
+            //Removing object 'recipe' from recipes list
+            recipes.Remove(recipe);
         }
 
         //Method to display list of recipes in alphabetical order by name
@@ -122,7 +124,7 @@ namespace ST10203070_PROG6221_POE
         public void DisplaySpecificRecipe() 
         {
             //Getting number corresponding to recipe name 
-            Console.Write("Enter the recipe number: ");
+            Console.WriteLine("Enter the number of the recipe to view: ");
             int recipeNumber;
             if (int.TryParse(Console.ReadLine(), out recipeNumber))
             {

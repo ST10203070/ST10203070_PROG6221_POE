@@ -237,7 +237,7 @@ namespace ST10203070_PROG6221_POE
                         if (clearConfirm.Equals("Yes", StringComparison.InvariantCultureIgnoreCase))
                         {
                             //Calling ClearRecipe method
-                            recipe.ClearRecipe();
+                            recipe.ClearRecipe(recipe);
                             //Statement confriming recipe cleared
                             Console.WriteLine("\nRecipe cleared successfully\n");
                             //Calling GetRecipeDetails method to get ingredients and steps from user and return recipe object to be passed as an argument to Actionsmenu method
@@ -261,7 +261,7 @@ namespace ST10203070_PROG6221_POE
                         break;
                     //Exit application
                     case 6:
-                        //Setting run varible to false to exit while loop
+                        //Setting run variable to false to exit while loop
                         run = false;
                         //Setting foreground colour to blue for goodbye message
                         Console.ForegroundColor = ConsoleColor.Blue;
