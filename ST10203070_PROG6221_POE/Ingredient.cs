@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ST10203070_PROG6221_POE
 {
-    class Ingredient
+    public class Ingredient
     {
         //Variables to hold name, quantity, original quantity, unit, calories, and foodgroup
         public string Name { get; set; }

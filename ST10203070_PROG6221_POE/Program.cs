@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ST10203070_PROG6221_POE
 {
-    class Program
+    public class Program
     {
         //Variable holds number of ingredients
         public int numIngredients = 0;
@@ -124,7 +124,7 @@ namespace ST10203070_PROG6221_POE
                 while (foodGroupNum == 0)
                 {
                     //Asking for food group from the given options
-                    Console.WriteLine("Enter corresponding food group number from the following options: \n1. Starchy foods\n2. Vegetables and fruits\n3. Dry beans, peas, lentils and soya\n4. Chicken, fish, meat and eggs\n5. Milk and dairy products\n6. Fats and oil\n7. Water");
+                    Console.WriteLine("Enter corresponding food group number from the following options (a food group is an assembly of foods sharing common nutritional properties): \n1. Starchy foods\n2. Vegetables and fruits\n3. Dry beans, peas, lentils and soya\n4. Chicken, fish, meat and eggs\n5. Milk and dairy products\n6. Fats and oil\n7. Water");
                     //Saving food group in varibale foodGroup
                     foodGroupNum = Convert.ToInt32(Console.ReadLine());
                     switch (foodGroupNum) 

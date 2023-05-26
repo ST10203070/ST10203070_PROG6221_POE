@@ -6,14 +6,14 @@ using System.Threading.Tasks;
 
 namespace ST10203070_PROG6221_POE
 {
-    class Recipe
+    public class Recipe
     {
         //Declaring list of Ingredients class to store ingredients
-        private List<Ingredient> ingredients;
+        public List<Ingredient> ingredients;
         //Declaring string list to store steps
         private List<string> steps;
         //Initializing Recipes List of Recipe class to store recipes
-        private static List<Recipe> recipes = new List<Recipe>();
+        public static List<Recipe> recipes = new List<Recipe>();
         //Initializing dictionary to map recipe numbers to recipe objects
         private Dictionary<int, Recipe> recipeDictionary = new Dictionary<int, Recipe>();
 
