@@ -116,20 +116,45 @@ namespace ST10203070_PROG6221_POE
                         Console.WriteLine("Invalid unit of measurement. Please enter a valid unit.");
                     }
                 }
-                Console.WriteLine("Calories: ");
+                Console.WriteLine("Calories (amount of energy the food you've eaten releases in your body once digested): ");
                 int calories = Convert.ToInt32(Console.ReadLine());
-                string? foodGroup = null;
-                //Checking if food group entered is valid (not null)
-                while (string.IsNullOrEmpty(foodGroup))
+                int foodGroupNum = 0;
+                string foodGroup = "";
+                //Checking if food group number entered is valid
+                while (foodGroupNum == 0)
                 {
-                    //Asking for food group
-                    Console.WriteLine("Food group: ");
+                    //Asking for food group from the given options
+                    Console.WriteLine("Enter corresponding food group number from the following options: \n1. Starchy foods\n2. Vegetables and fruits\n3. Dry beans, peas, lentils and soya\n4. Chicken, fish, meat and eggs\n5. Milk and dairy products\n6. Fats and oil\n7. Water");
                     //Saving food group in varibale foodGroup
-                    foodGroup = Console.ReadLine();
-
-                    if (string.IsNullOrEmpty(foodGroup))
+                    foodGroupNum = Convert.ToInt32(Console.ReadLine());
+                    switch (foodGroupNum) 
                     {
-                        Console.WriteLine("Invalid food group. Please enter a valid food group.");
+                        case 1:
+                            foodGroup = "Starchy foods";
+                            break;
+                        case 2:
+                            foodGroup = "Vegetables and fruits";
+                            break;
+                        case 3:
+                            foodGroup = "Dry beans, peas, lentils and soya";
+                            break;
+                        case 4:
+                            foodGroup = "Chicken, fish, meat and eggs";
+                            break;
+                        case 5:
+                            foodGroup = "Milk and dairy products";
+                            break;
+                        case 6:
+                            foodGroup = "Fats and oil";
+                            break;
+                        case 7:
+                            foodGroup = "Water";
+                            break;
+                    }
+
+                    if (foodGroupNum == 0)
+                    {
+                        Console.WriteLine("Invalid food group number. Please enter a valid number corresponding to a food group.");
                     }
                 }
                 //Creating new object of Ingredient class to hold current name, quantity, unit, calories, and foodGroup

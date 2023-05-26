@@ -14,6 +14,9 @@ namespace ST10203070_PROG6221_POE
         private List<string> steps;
         //Initializing Recipes List of Recipe class to store recipes
         private static List<Recipe> recipes = new List<Recipe>();
+        //Initializing dictionary to map recipe numbers to recipe objects
+        private Dictionary<int, Recipe> recipeDictionary = new Dictionary<int, Recipe>();
+
         public int RecipeID { get; private set; }
         public string RecipeName { get; set; }
 
@@ -63,7 +66,7 @@ namespace ST10203070_PROG6221_POE
                 Console.WriteLine($"{ingredient.Name}: {ingredient.Quantity} {ingredient.Unit} \n\nCalories: {ingredient.Calories} \n\nFood group: {ingredient.FoodGroup}");
             }
             //Displaying total calories
-            Console.WriteLine($"\nTotal Calories: {CalculateTotalCalories(recipe)}");
+            Console.WriteLine($"\nTotal Calories: {CalculateTotalCalories(recipe)}\nCalories are the amount of energy the food you've eaten releases in your body once digested");
 
             //Using loop to print each step from steps list
             Console.WriteLine("\nSteps:");
@@ -110,14 +113,24 @@ namespace ST10203070_PROG6221_POE
         //Method to display list of recipes in alphabetical order by name
         public void DisplayRecipeList()
         {
+            //Changing foreground colour to red for recipe list
+            Console.ForegroundColor= ConsoleColor.Red;
             //Sorting recipes by list by recipeNmae in alphabetical order
             List<Recipe> sortedRecipes = recipes.OrderBy(recipe => recipe.RecipeName).ToList();
+            //Populate the recipe dictionary with the sorted recipes
+            recipeDictionary.Clear();
+            for (int i = 0; i < sortedRecipes.Count; i++)
+            {
+                recipeDictionary[i + 1] = sortedRecipes[i];
+            }
             //Concatenating each recipeName and displaying it to the user
             Console.WriteLine("\nRecipe list: ");
             for(int i = 0; i < sortedRecipes.Count; i++) 
             {
                 Console.WriteLine($"{i+1}. {sortedRecipes[i].RecipeName}");
             }
+            //Changing foreground colour back to grey
+            Console.ForegroundColor= ConsoleColor.Gray;
         }
 
         //Method to display specific recipe based on users choice
@@ -128,9 +141,11 @@ namespace ST10203070_PROG6221_POE
             int recipeNumber;
             if (int.TryParse(Console.ReadLine(), out recipeNumber))
             {
-                if (recipeNumber >= 1 && recipeNumber <= recipes.Count)
+                //Checking if the given recipe number exists in the recipeDictionary
+                if (recipeDictionary.ContainsKey(recipeNumber))
                 {
-                    Recipe recipe = recipes[recipeNumber - 1];
+                    //Assigning recipe object associated with recipeNumber from the recipeDictionary to variable recipe
+                    Recipe recipe = recipeDictionary[recipeNumber];
                     //Changing foreground colour to blue for recipe display
                     Console.ForegroundColor = ConsoleColor.Blue;
                     //Display recipe opening message
@@ -142,7 +157,7 @@ namespace ST10203070_PROG6221_POE
                         Console.WriteLine($"{ingredient.Name}: {ingredient.Quantity} {ingredient.Unit} \n\nCalories: {ingredient.Calories} \n\nFood group: {ingredient.FoodGroup}");
                     }
                     //Displaying total calories
-                    Console.WriteLine($"\nTotal Calories: {CalculateTotalCalories(recipe)}");
+                    Console.WriteLine($"\nTotal Calories: {CalculateTotalCalories(recipe)}\nCalories are the amount of energy the food you've eaten releases in your body once digested");
                     Console.WriteLine("\nSteps:");
                     for (int i = 0; i < recipe.steps.Count; i++)
                     {
