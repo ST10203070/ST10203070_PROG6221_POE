@@ -43,6 +43,7 @@ namespace ST10203070_PROG6221_POE
             //Calling GetRecipeDetails method to get ingredients and steps from user and return recipe object to be passed as an argument to Actionsmenu method
             prog.ActionsMenu(prog.GetRecipeDetails());
         }
+        //Method to get recipe details from user
         public Recipe GetRecipeDetails() 
         {
             //Setting foreground colour to blue for welcome message
@@ -116,6 +117,7 @@ namespace ST10203070_PROG6221_POE
                         Console.WriteLine("Invalid unit of measurement. Please enter a valid unit.");
                     }
                 }
+                //Getting calories from user
                 Console.WriteLine("Calories (amount of energy the food you've eaten releases in your body once digested): ");
                 int calories = Convert.ToInt32(Console.ReadLine());
                 int foodGroupNum = 0;
@@ -203,6 +205,7 @@ namespace ST10203070_PROG6221_POE
             return recipe;
         }
 
+        //Method to display menu and act on users next desired action
         public void ActionsMenu(Recipe recipe) 
         {
             //Boolean variable to keep while loop running
@@ -311,6 +314,7 @@ namespace ST10203070_PROG6221_POE
         private void RecipeExceededCaloriesHandler(string recipeName, double totalCalories) 
         {
             Console.ForegroundColor= ConsoleColor.Red;
+            //Displaying total calories exceeded message with recipe details
             Console.WriteLine($"\nThe total calories of '{recipeName}' exceed 300 with a total of {totalCalories} calories.");
             Console.ForegroundColor= ConsoleColor.Gray;
         }

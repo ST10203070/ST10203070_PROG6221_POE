@@ -7,7 +7,7 @@ namespace ST10203070_PROG6221_POE.Tests
     [TestClass]
     public class CalorieTest
     {
-        //Test method checking total calories for 3 different recipes
+        //Test method checking total calories for 3 ingredients
         [TestMethod]
         public void CalculateTotalCalories_ShouldReturnCorrectTotalCalories()
         {

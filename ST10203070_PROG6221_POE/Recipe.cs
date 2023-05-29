@@ -16,8 +16,9 @@ namespace ST10203070_PROG6221_POE
         public static List<Recipe> recipes = new List<Recipe>();
         //Initializing dictionary to map recipe numbers to recipe objects
         private Dictionary<int, Recipe> recipeDictionary = new Dictionary<int, Recipe>();
-
+        //Declaring variable to hold recipe ID for each recipe
         public int RecipeID { get; private set; }
+        //Declaring variable to hold recipe name for each recipe
         public string RecipeName { get; set; }
 
         //Recipe constructor
@@ -117,7 +118,7 @@ namespace ST10203070_PROG6221_POE
             Console.ForegroundColor= ConsoleColor.Red;
             //Sorting recipes by list by recipeNmae in alphabetical order
             List<Recipe> sortedRecipes = recipes.OrderBy(recipe => recipe.RecipeName).ToList();
-            //Populate the recipe dictionary with the sorted recipes
+            //Populating the recipe dictionary with the sorted recipes
             recipeDictionary.Clear();
             for (int i = 0; i < sortedRecipes.Count; i++)
             {
@@ -138,8 +139,8 @@ namespace ST10203070_PROG6221_POE
         {
             //Getting number corresponding to recipe name 
             Console.WriteLine("Enter the number of the recipe to view: ");
-            int recipeNumber;
-            if (int.TryParse(Console.ReadLine(), out recipeNumber))
+            //Attempting to parse user input to an int 'recipeNumber' else invalid input message will display
+            if (int.TryParse(Console.ReadLine(), out int recipeNumber))
             {
                 //Checking if the given recipe number exists in the recipeDictionary
                 if (recipeDictionary.ContainsKey(recipeNumber))
