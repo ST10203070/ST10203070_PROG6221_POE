@@ -302,8 +302,14 @@ namespace ST10203070_PROG6221_POE
                         Console.WriteLine("\nInvalid choice. Please try again.");
                         break;
                 }
-                //If statement to break from loop if user decides to clear and enter new recipe or add a new recipe
-                if ((choice == 3 || choice == 4) && clearConfirm != null && clearConfirm.Equals("Yes", StringComparison.InvariantCultureIgnoreCase))
+                //If statement to break from loop if user decides to clear and enter new recipe
+                if ((choice == 3) && clearConfirm != null && clearConfirm.Equals("Yes", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    break;
+                }
+
+                //If statement to break from loop if user decides to add a new recipe
+                if (choice == 4) 
                 {
                     break;
                 }
