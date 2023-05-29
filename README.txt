@@ -1,8 +1,8 @@
 Instructions to compile:
 
 1. Ensure you have Visual Studio installed on your device. 
-2. Extract the file labelled 'ST10203070_PROG6221_POE.sln' from the ZIP file labelled 'ST10203070_PROG6221_POE'. 
-3. Open the extracted file 'ST10203070_PROG6221_POE.sln' with Visual Studio. 
+2. Extract the folder labelled 'ST10203070_PROG6221_POE' from the ZIP file labelled 'MaxWalsh_ST10203070_PROG6221_Part2'. 
+3. Open the Visual Studio Solution file labelled 'ST10203070_PROG6221_POE.sln' in the extracted folder with Visual Studio. 
 4. Set the build configuration in Visual Studio to debug.
 5. Click the 'Build Solution' button or use the keyboard shortcut (Ctrl+Shift+B).
 6. Monitor the build output in the output window. Resolve any issues that show during the build.
