@@ -278,8 +278,8 @@ namespace ST10203070_PROG6221_POE
                         break;
                     //Add recipe
                     case 4:
-                        //Calling GetRecipeDetails to allow user to add another recipe
-                        GetRecipeDetails();
+                        //Calling GetRecipeDetails method to get ingredients and steps from user and return recipe object to be passed as an argument to Actionsmenu method
+                        this.ActionsMenu(this.GetRecipeDetails());
                         break;
                     //Display all recipes
                     case 5:
@@ -302,8 +302,8 @@ namespace ST10203070_PROG6221_POE
                         Console.WriteLine("\nInvalid choice. Please try again.");
                         break;
                 }
-                //If statement to break from loop if user decides to clear and enter new recipe
-                if (choice == 3 && clearConfirm != null && clearConfirm.Equals("Yes", StringComparison.InvariantCultureIgnoreCase))
+                //If statement to break from loop if user decides to clear and enter new recipe or add a new recipe
+                if ((choice == 3 || choice == 4) && clearConfirm != null && clearConfirm.Equals("Yes", StringComparison.InvariantCultureIgnoreCase))
                 {
                     break;
                 }
