@@ -1,4 +1,4 @@
-﻿using System;
+﻿/*using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
@@ -284,8 +284,8 @@ namespace ST10203070_PROG6221_POE
                     //Display all recipes
                     case 5:
                         //Calling DisplayRecipeList method to display all recipes
-                        recipe.DisplayRecipeList();
-                        recipe.DisplaySpecificRecipe();
+                        //recipe.DisplayRecipeList();
+                        //recipe.DisplaySpecificRecipe();
                         break;
                     //Exit application
                     case 6:
@@ -326,4 +326,4 @@ namespace ST10203070_PROG6221_POE
         }
     }
 }
-//---------------------------------------END OF FILE---------------------------------------//
+//---------------------------------------END OF FILE---------------------------------------//*/

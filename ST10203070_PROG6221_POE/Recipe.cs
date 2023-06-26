@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 
 namespace ST10203070_PROG6221_POE
 {
@@ -112,73 +113,58 @@ namespace ST10203070_PROG6221_POE
         }
 
         //Method to display list of recipes in alphabetical order by name
-        public void DisplayRecipeList()
+        public void DisplayRecipeList(ListBox recipeListBox)
         {
-            //Changing foreground colour to red for recipe list
-            Console.ForegroundColor= ConsoleColor.Red;
-            //Sorting recipes by list by recipeNmae in alphabetical order
+            // Sorting recipes by recipeName in alphabetical order
             List<Recipe> sortedRecipes = recipes.OrderBy(recipe => recipe.RecipeName).ToList();
-            //Populating the recipe dictionary with the sorted recipes
-            recipeDictionary.Clear();
+
+            // Clear the recipeListBox to ensure a fresh display
+            recipeListBox.Items.Clear();
+
+            // Populate the recipeListBox with the sorted recipe names
             for (int i = 0; i < sortedRecipes.Count; i++)
             {
-                recipeDictionary[i + 1] = sortedRecipes[i];
+                recipeListBox.Items.Add($"{i + 1}. {sortedRecipes[i].RecipeName}");
             }
-            //Concatenating each recipeName and displaying it to the user
-            Console.WriteLine("\nRecipe list: ");
-            for(int i = 0; i < sortedRecipes.Count; i++) 
-            {
-                Console.WriteLine($"{i+1}. {sortedRecipes[i].RecipeName}");
-            }
-            //Changing foreground colour back to grey
-            Console.ForegroundColor= ConsoleColor.Gray;
         }
 
         //Method to display specific recipe based on users choice
-        public void DisplaySpecificRecipe() 
+        public void DisplaySpecificRecipe(int recipeNumber, TextBlock recipeDetailsTextBlock)
         {
-            //Getting number corresponding to recipe name 
-            Console.WriteLine("Enter the number of the recipe to view: ");
-            //Attempting to parse user input to an int 'recipeNumber' else invalid input message will display
-            if (int.TryParse(Console.ReadLine(), out int recipeNumber))
+            if (recipeDictionary.ContainsKey(recipeNumber))
             {
-                //Checking if the given recipe number exists in the recipeDictionary
-                if (recipeDictionary.ContainsKey(recipeNumber))
+                Recipe recipe = recipeDictionary[recipeNumber];
+                StringBuilder sb = new StringBuilder();
+
+                // Append recipe details to the StringBuilder
+                sb.AppendLine($"Recipe '{recipe.RecipeName}' details");
+                sb.AppendLine("----------------------------------------");
+                sb.AppendLine("Ingredients:");
+                foreach (Ingredient ingredient in recipe.ingredients)
                 {
-                    //Assigning recipe object associated with recipeNumber from the recipeDictionary to variable recipe
-                    Recipe recipe = recipeDictionary[recipeNumber];
-                    //Changing foreground colour to blue for recipe display
-                    Console.ForegroundColor = ConsoleColor.Blue;
-                    //Display recipe opening message
-                    Console.WriteLine($"\nRecipe '{recipe.RecipeName}' details");
-                    Console.WriteLine("----------------------------------------");
-                    Console.WriteLine("Ingredients:");
-                    foreach (Ingredient ingredient in recipe.ingredients)
-                    {
-                        Console.WriteLine($"{ingredient.Name}: {ingredient.Quantity} {ingredient.Unit} \n\nCalories: {ingredient.Calories} \n\nFood group: {ingredient.FoodGroup}");
-                    }
-                    //Displaying total calories
-                    Console.WriteLine($"\nTotal Calories: {CalculateTotalCalories(recipe)}\nCalories are the amount of energy the food you've eaten releases in your body once digested");
-                    Console.WriteLine("\nSteps:");
-                    for (int i = 0; i < recipe.steps.Count; i++)
-                    {
-                        Console.WriteLine($"{(i + 1)}: {steps[i]}");
-                    }
-                    Console.WriteLine("----------------------------------------");
-                    //Changing foreground colour back to gray
-                    Console.ForegroundColor = ConsoleColor.Gray;
+                    sb.AppendLine($"{ingredient.Name}: {ingredient.Quantity} {ingredient.Unit}");
+                    sb.AppendLine($"Calories: {ingredient.Calories}");
+                    sb.AppendLine($"Food group: {ingredient.FoodGroup}");
                 }
-                else
+                sb.AppendLine($"\nTotal Calories: {CalculateTotalCalories(recipe)}");
+                sb.AppendLine("Calories are the amount of energy the food you've eaten releases in your body once digested");
+                sb.AppendLine("Steps:");
+                for (int i = 0; i < recipe.steps.Count; i++)
                 {
-                    Console.WriteLine("Invalid recipe number. Please try again.");
+                    sb.AppendLine($"{(i + 1)}: {recipe.steps[i]}");
                 }
+                sb.AppendLine("----------------------------------------");
+
+                // Set the content of the recipeDetailsTextBlock with the recipe details
+                recipeDetailsTextBlock.Text = sb.ToString();
             }
             else
             {
-                Console.WriteLine("Invalid input. Please enter a valid recipe number.");
+                // Handle the case where the recipe number is invalid
+                recipeDetailsTextBlock.Text = "Invalid recipe number. Please try again.";
             }
-
         }
+
 
         //Method to calculate and return total calories
         public double CalculateTotalCalories(Recipe recipe)
@@ -190,6 +176,52 @@ namespace ST10203070_PROG6221_POE
                 totalCalories += ingredient.Calories;
             }
             return totalCalories;
+        }
+
+        // Method to filter recipes by maximum calories
+        public List<Recipe> FilterRecipesByMaxCalories(int maxCalories)
+        {
+            List<Recipe> filteredRecipes = new List<Recipe>();
+
+            foreach (Recipe recipe in recipes)
+            {
+                double totalCalories = CalculateTotalCalories(recipe);
+                if (totalCalories <= maxCalories)
+                {
+                    filteredRecipes.Add(recipe);
+                }
+            }
+
+            return filteredRecipes;
+        }
+
+        // Method to calculate the food group percentages for the selected recipes
+        public Dictionary<string, double> CalculateFoodGroupPercentages(List<Recipe> recipes)
+        {
+            Dictionary<string, double> foodGroupPercentages = new Dictionary<string, double>();
+
+            // Calculate the total quantity for each food group
+            Dictionary<string, double> totalQuantities = new Dictionary<string, double>();
+            foreach (Recipe recipe in recipes)
+            {
+                foreach (Ingredient ingredient in recipe.ingredients)
+                {
+                    if (!totalQuantities.ContainsKey(ingredient.FoodGroup))
+                    {
+                        totalQuantities[ingredient.FoodGroup] = 0;
+                    }
+                    totalQuantities[ingredient.FoodGroup] += ingredient.Quantity;
+                }
+            }
+
+            // Calculate the food group percentages
+            foreach (string foodGroup in totalQuantities.Keys)
+            {
+                double percentage = (totalQuantities[foodGroup] / totalQuantities.Values.Sum()) * 100;
+                foodGroupPercentages[foodGroup] = percentage;
+            }
+
+            return foodGroupPercentages;
         }
     }
 }
