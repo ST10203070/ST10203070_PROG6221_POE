@@ -1,32 +1,32 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\maxgw\\OneDrive\\Documents\\VC\\SEMESTER 3\\PROG6221\\POE\\MaxWalsh_ST10203070_PROG6221_POE\\st10203070_PROG6221_POE\\ST10203070_PROG6221_POE\\ST10203070_PROG6221_POE.csproj": {}
+    "C:\\Users\\maxgw\\OneDrive\\Documents\\VC\\SEMESTER 3\\PROG6221\\POE\\MaxWalsh_ST10203070_PROG6221_POE\\st10203070_PROG6221_POE\\st10203070_PROG6221_POE\\st10203070_PROG6221_POE.csproj": {}
   },
   "projects": {
-    "C:\\Users\\maxgw\\OneDrive\\Documents\\VC\\SEMESTER 3\\PROG6221\\POE\\MaxWalsh_ST10203070_PROG6221_POE\\st10203070_PROG6221_POE\\ST10203070_PROG6221_POE\\ST10203070_PROG6221_POE.csproj": {
+    "C:\\Users\\maxgw\\OneDrive\\Documents\\VC\\SEMESTER 3\\PROG6221\\POE\\MaxWalsh_ST10203070_PROG6221_POE\\st10203070_PROG6221_POE\\st10203070_PROG6221_POE\\st10203070_PROG6221_POE.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\maxgw\\OneDrive\\Documents\\VC\\SEMESTER 3\\PROG6221\\POE\\MaxWalsh_ST10203070_PROG6221_POE\\st10203070_PROG6221_POE\\ST10203070_PROG6221_POE\\ST10203070_PROG6221_POE.csproj",
-        "projectName": "ST10203070_PROG6221_POE",
-        "projectPath": "C:\\Users\\maxgw\\OneDrive\\Documents\\VC\\SEMESTER 3\\PROG6221\\POE\\MaxWalsh_ST10203070_PROG6221_POE\\st10203070_PROG6221_POE\\ST10203070_PROG6221_POE\\ST10203070_PROG6221_POE.csproj",
+        "projectUniqueName": "C:\\Users\\maxgw\\OneDrive\\Documents\\VC\\SEMESTER 3\\PROG6221\\POE\\MaxWalsh_ST10203070_PROG6221_POE\\st10203070_PROG6221_POE\\st10203070_PROG6221_POE\\st10203070_PROG6221_POE.csproj",
+        "projectName": "st10203070_PROG6221_POE",
+        "projectPath": "C:\\Users\\maxgw\\OneDrive\\Documents\\VC\\SEMESTER 3\\PROG6221\\POE\\MaxWalsh_ST10203070_PROG6221_POE\\st10203070_PROG6221_POE\\st10203070_PROG6221_POE\\st10203070_PROG6221_POE.csproj",
         "packagesPath": "C:\\Users\\maxgw\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\maxgw\\OneDrive\\Documents\\VC\\SEMESTER 3\\PROG6221\\POE\\MaxWalsh_ST10203070_PROG6221_POE\\st10203070_PROG6221_POE\\ST10203070_PROG6221_POE\\obj\\",
+        "outputPath": "C:\\Users\\maxgw\\OneDrive\\Documents\\VC\\SEMESTER 3\\PROG6221\\POE\\MaxWalsh_ST10203070_PROG6221_POE\\st10203070_PROG6221_POE\\st10203070_PROG6221_POE\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\maxgw\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
-          "net6.0"
+          "net7.0-windows"
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
-          "net6.0": {
-            "targetAlias": "net6.0",
+          "net7.0-windows7.0": {
+            "targetAlias": "net7.0-windows",
             "projectReferences": {}
           }
         },
@@ -37,14 +37,8 @@
         }
       },
       "frameworks": {
-        "net6.0": {
-          "targetAlias": "net6.0",
-          "dependencies": {
-            "MSTest.TestFramework": {
-              "target": "Package",
-              "version": "[3.0.3, )"
-            }
-          },
+        "net7.0-windows7.0": {
+          "targetAlias": "net7.0-windows",
           "imports": [
             "net461",
             "net462",
@@ -59,6 +53,9 @@
           "frameworkReferences": {
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
+            },
+            "Microsoft.WindowsDesktop.App.WPF": {
+              "privateAssets": "none"
             }
           },
           "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.304\\RuntimeIdentifierGraph.json"
