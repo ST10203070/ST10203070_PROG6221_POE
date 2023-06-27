@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace ST10203070_PROG6221_POE
@@ -56,29 +57,56 @@ namespace ST10203070_PROG6221_POE
         //Method to display recipe
         public void DisplayRecipe(Recipe recipe)
         {
-            //Changing foreground colour to blue for recipe display
-            Console.ForegroundColor = ConsoleColor.Blue;
-            //Display recipe opening message
-            Console.WriteLine($"\nRecipe '{recipe.RecipeName}' details");
-            Console.WriteLine("----------------------------------------");
-            Console.WriteLine("Ingredients:");
-            //Using loop to print ingredient name, quantity, unit, calories, and food group for each ingredient in ingredients list
+            // Create a new window for displaying the recipe details
+            var recipeWindow = new Window()
+            {
+                Title = $"Recipe '{recipe.RecipeName}' details",
+                Width = 400,
+                Height = 300,
+                WindowStartupLocation = WindowStartupLocation.CenterScreen
+            };
+
+            // Create a text block to hold the recipe details
+            var recipeTextBlock = new TextBlock()
+            {
+                TextWrapping = TextWrapping.Wrap,
+                Margin = new Thickness(20)
+            };
+
+            // Construct the recipe details string
+            var recipeDetails = $"Recipe '{recipe.RecipeName}' details\n";
+            recipeDetails += "----------------------------------------\n";
+            recipeDetails += "Ingredients:\n";
+
+            // Iterate over ingredients and append their details to the string
             foreach (var ingredient in recipe.ingredients)
             {
-                Console.WriteLine($"{ingredient.Name}: {ingredient.Quantity} {ingredient.Unit} \n\nCalories: {ingredient.Calories} \n\nFood group: {ingredient.FoodGroup}");
+                recipeDetails += $"{ingredient.Name}: {ingredient.Quantity} {ingredient.Unit}\n";
+                recipeDetails += $"Calories: {ingredient.Calories}\n";
+                recipeDetails += $"Food group: {ingredient.FoodGroup}\n\n";
             }
-            //Displaying total calories
-            Console.WriteLine($"\nTotal Calories: {CalculateTotalCalories(recipe)}\nCalories are the amount of energy the food you've eaten releases in your body once digested");
 
-            //Using loop to print each step from steps list
-            Console.WriteLine("\nSteps:");
+            // Append total calories to the string
+            recipeDetails += $"Total Calories: {CalculateTotalCalories(recipe)}\n";
+            recipeDetails += "Calories are the amount of energy the food you've eaten releases in your body once digested\n\n";
+
+            // Append steps to the string
+            recipeDetails += "Steps:\n";
             for (int i = 0; i < recipe.steps.Count; i++)
             {
-                Console.WriteLine($"{(i + 1)}: {steps[i]}");
+                recipeDetails += $"{(i + 1)}: {recipe.steps[i]}\n";
             }
-            Console.WriteLine("----------------------------------------");
-            //Changing foreground colour back to gray
-            Console.ForegroundColor = ConsoleColor.Gray;
+
+            recipeDetails += "----------------------------------------";
+
+            // Set the text block's text to the recipe details
+            recipeTextBlock.Text = recipeDetails;
+
+            // Set the content of the recipe window as the text block
+            recipeWindow.Content = recipeTextBlock;
+
+            // Show the recipe window
+            recipeWindow.ShowDialog();
         }
 
         //Method to scale recipe

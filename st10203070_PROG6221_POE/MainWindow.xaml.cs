@@ -69,7 +69,7 @@ namespace st10203070_PROG6221_POE
                 {
                     Title = $"Ingredient {i + 1} Details",
                     Width = 400,
-                    Height = 300,
+                    Height = 400,
                     WindowStartupLocation = WindowStartupLocation.CenterScreen
                 };
 
@@ -608,3 +608,4 @@ namespace st10203070_PROG6221_POE
         }
     }
 }
+//---------------------------------------END OF FILE---------------------------------------//
