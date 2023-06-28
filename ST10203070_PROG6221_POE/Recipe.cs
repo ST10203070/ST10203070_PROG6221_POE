@@ -62,7 +62,7 @@ namespace ST10203070_PROG6221_POE
             {
                 Title = $"Recipe '{recipe.RecipeName}' details",
                 Width = 400,
-                Height = 400,
+                Height = 550,
                 WindowStartupLocation = WindowStartupLocation.CenterScreen
             };
 
@@ -211,7 +211,7 @@ namespace ST10203070_PROG6221_POE
                 {
                     Title = "Recipe Details",
                     Width = 400,
-                    Height = 300,
+                    Height = 550,
                     Content = new StackPanel
                     {
                         Children =

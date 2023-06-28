@@ -547,6 +547,10 @@ namespace st10203070_PROG6221_POE
                         // Create a Grid control to hold the pie chart
                         Grid pieChartGrid = new Grid();
 
+                        // Create a single row and column for the pie chart
+                        pieChartGrid.RowDefinitions.Add(new RowDefinition());
+                        pieChartGrid.ColumnDefinitions.Add(new ColumnDefinition());
+
                         // Calculate the angles for the pie slices
                         double startAngle = 0;
                         foreach (var kvp in foodGroupPercentages)
@@ -662,3 +666,8 @@ namespace st10203070_PROG6221_POE
     }
 }
 //---------------------------------------END OF FILE---------------------------------------//
+
+
+//FIX:
+//Selection of recipes for menu
+//Pie chart
