@@ -161,6 +161,9 @@ namespace st10203070_PROG6221_POE
             // Call the AddRecipe method to add the recipe to the recipes list
             recipe.AddRecipe(recipe);
 
+            // Add the recipe to the recipeDictionary
+            recipe.recipeDictionary.Add(recipe.RecipeID, recipe);
+
             // If the total calories exceed 300, raise the RecipeExceededCaloriesEvent
             if (recipe.CalculateTotalCalories(recipe) > 300)
             {
@@ -170,8 +173,8 @@ namespace st10203070_PROG6221_POE
             // Display a message box to confirm the added recipe
             MessageBox.Show($"Recipe '{recipeName}' added successfully");
 
-            // Display the recipe using a message box
-            MessageBox.Show(recipe.ToString());
+            // Display the recipe by calling DisplayRecipe method
+            recipe.DisplayRecipe(recipe);
 
             // Return the recipe object
             return recipe;
@@ -182,6 +185,8 @@ namespace st10203070_PROG6221_POE
             var run = true;
             bool clearAndEnterNewRecipe = false;
             bool addNewRecipe = false;
+            // Declare the actionsWindow variable
+            Window actionsWindow = null;
 
             while (run)
             {
@@ -244,7 +249,7 @@ namespace st10203070_PROG6221_POE
                 var resetButton = new Button() { Content = "Reset Quantities" };
                 resetButton.Click += (sender, e) =>
                 {
-                    // Create the scaling window
+                    // Create the reset window
                     var resetWindow = new Window()
                     {
                         Title = "Reset Recipe Quantities",
@@ -271,7 +276,7 @@ namespace st10203070_PROG6221_POE
                     {
                         Margin = new Thickness(20)
                     };
-                    resetStackPanel.Children.Add(scaleButton);
+                    resetStackPanel.Children.Add(resetButton);
 
                     // Set the content of the scaling window
                     resetWindow.Content = resetStackPanel;
@@ -290,7 +295,7 @@ namespace st10203070_PROG6221_POE
                         Width = 300,
                         Height = 200,
                         WindowStartupLocation = WindowStartupLocation.CenterOwner,
-                        Owner = this // Set the owner window appropriately
+                        Owner = actionsWindow  // Set the owner window appropriately
                     };
 
                     var confirmTextBlock = new TextBlock()
@@ -314,6 +319,9 @@ namespace st10203070_PROG6221_POE
 
                         // Call the ClearRecipe method
                         recipe.ClearRecipe(recipe);
+
+                        // Close the actions window
+                        actionsWindow.Close();
 
                         // Display the statement confirming recipe clearance
                         MessageBox.Show("Recipe cleared successfully");
@@ -370,6 +378,9 @@ namespace st10203070_PROG6221_POE
                     // Check the user's response
                     if (result == MessageBoxResult.Yes)
                     {
+                        // Close the actions window
+                        actionsWindow.Close();
+
                         // Call the GetRecipeDetails method to get ingredients and steps from the user and return the new recipe object
                         var newRecipe = GetRecipeDetails();
 
@@ -381,53 +392,90 @@ namespace st10203070_PROG6221_POE
                 var displayAllButton = new Button() { Content = "Display all Recipes" };
                 displayAllButton.Click += (sender, e) =>
                 {
-                    // Call the DisplayRecipeList method to populate the recipeListBox
-                    recipe.DisplayRecipeList(recipeListBox);
-
                     // Create a ListBox control to display the recipe list
                     var listBox = new ListBox
                     {
-                        Name = "recipeListBox",
                         Width = 400,
-                        Height = 300
+                        Height = 250
                     };
 
-                    // Create a ScrollViewer to enable scrolling if needed
-                    var scrollViewer = new ScrollViewer
+                    // Call the DisplayRecipeList method to populate the listBox
+                    recipe.DisplayRecipeList(listBox);
+
+                    // Create a TextBlock for the prompt
+                    var promptTextBlock = new TextBlock
                     {
-                        Content = listBox,
-                        HorizontalScrollBarVisibility = ScrollBarVisibility.Auto,
-                        VerticalScrollBarVisibility = ScrollBarVisibility.Auto
+                        Text = "Enter the number of the recipe to view:",
+                        Margin = new Thickness(0, 10, 0, 0)
                     };
+
+                    // Create a TextBox for the user input
+                    var recipeNumberTextBox = new TextBox
+                    {
+                        Width = 150,
+                        Margin = new Thickness(0, 5, 0, 0)
+                    };
+
+                    // Create an "Enter" button
+                    var enterButton = new Button
+                    {
+                        Content = "Enter",
+                        Width = 80,
+                        Margin = new Thickness(0, 10, 0, 0)
+                    };
+
+                    // Create a StackPanel to hold the prompt, TextBox, and Enter button
+                    var stackPanel = new StackPanel
+                    {
+                        Orientation = Orientation.Vertical,
+                        Margin = new Thickness(10)
+                    };
+                    stackPanel.Children.Add(promptTextBlock);
+                    stackPanel.Children.Add(recipeNumberTextBox);
+                    stackPanel.Children.Add(enterButton);
+
+                    // Create a Grid to hold the listBox and stackPanel
+                    var grid = new Grid();
+                    grid.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(1, GridUnitType.Star) });
+                    grid.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
+                    grid.Children.Add(listBox);
+                    grid.Children.Add(stackPanel);
+                    Grid.SetRow(listBox, 0);
+                    Grid.SetRow(stackPanel, 1);
 
                     // Create a Window to display the recipe list
                     var recipeListWindow = new Window
                     {
                         Title = "All Recipes",
-                        Content = scrollViewer,
+                        Content = grid,
                         Width = 400,
-                        Height = 300
+                        Height = 400
+                    };
+
+                    // Event handler for the Enter button click
+                    enterButton.Click += (s, args) =>
+                    {
+                        // Get the recipe number input
+                        string recipeNumberInput = recipeNumberTextBox.Text;
+
+                        // Parse the recipe number input
+                        if (int.TryParse(recipeNumberInput, out int recipeNumber) && recipe.recipeDictionary.ContainsKey(recipeNumber))
+                        {
+                            // Call the DisplaySpecificRecipe method with the chosen recipe number
+                            recipe.DisplaySpecificRecipe(recipeNumber);
+                        }
+                        else
+                        {
+                            // Handle the case where the recipe number input is invalid
+                            recipeDetailsTextBlock.Text = "Invalid input. Please enter a valid recipe number.";
+                        }
+                        recipeListWindow.Close();
+
                     };
 
                     // Show the recipeListWindow
                     recipeListWindow.ShowDialog();
-
-                    // Prompt the user for the recipe number
-                    string recipeNumberInput = Microsoft.VisualBasic.Interaction.InputBox("Enter the number of the recipe to view:", "Recipe Number");
-
-                    // Parse the recipe number input
-                    if (int.TryParse(recipeNumberInput, out int recipeNumber))
-                    {
-                        // Call the DisplaySpecificRecipe method with the chosen recipe number
-                        recipe.DisplaySpecificRecipe(recipeNumber, recipeDetailsTextBlock);
-                    }
-                    else
-                    {
-                        // Handle the case where the recipe number input is invalid
-                        recipeDetailsTextBlock.Text = "Invalid input. Please enter a valid recipe number.";
-                    }
                 };
-
 
                 var filterButton = new Button() { Content = "Filter recipes by entering maximum calories" };
                 filterButton.Click += (sender, e) =>
@@ -548,6 +596,11 @@ namespace st10203070_PROG6221_POE
                 {
                     // Set the "run" variable to false to exit the application
                     run = false;
+                    // Close the actions window
+                    actionsWindow.Close();
+
+                    // Terminate the application
+                    Application.Current.Shutdown();
                 };
 
 
@@ -567,7 +620,7 @@ namespace st10203070_PROG6221_POE
                 actionsStackPanel.Children.Add(exitButton);
 
                 // Create the actions window
-                var actionsWindow = new Window()
+                actionsWindow = new Window()
                 {
                     Title = "Actions Menu",
                     Width = 400,

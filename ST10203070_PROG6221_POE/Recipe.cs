@@ -17,7 +17,7 @@ namespace ST10203070_PROG6221_POE
         //Initializing Recipes List of Recipe class to store recipes
         public static List<Recipe> recipes = new List<Recipe>();
         //Initializing dictionary to map recipe numbers to recipe objects
-        private Dictionary<int, Recipe> recipeDictionary = new Dictionary<int, Recipe>();
+        public Dictionary<int, Recipe> recipeDictionary = new Dictionary<int, Recipe>();
         //Declaring variable to hold recipe ID for each recipe
         public int RecipeID { get; private set; }
         //Declaring variable to hold recipe name for each recipe
@@ -62,7 +62,7 @@ namespace ST10203070_PROG6221_POE
             {
                 Title = $"Recipe '{recipe.RecipeName}' details",
                 Width = 400,
-                Height = 300,
+                Height = 400,
                 WindowStartupLocation = WindowStartupLocation.CenterScreen
             };
 
@@ -102,8 +102,31 @@ namespace ST10203070_PROG6221_POE
             // Set the text block's text to the recipe details
             recipeTextBlock.Text = recipeDetails;
 
-            // Set the content of the recipe window as the text block
-            recipeWindow.Content = recipeTextBlock;
+            // Create an OK button
+            var okButton = new Button()
+            {
+                Content = "OK",
+                Width = 80,
+                Height = 30,
+                Margin = new Thickness(20, 0, 0, 20),
+                HorizontalAlignment = HorizontalAlignment.Left,
+                VerticalAlignment = VerticalAlignment.Bottom
+            };
+
+            // Set the click event handler for the OK button
+            okButton.Click += (sender, e) =>
+            {
+                // Close the recipe window when the OK button is clicked
+                recipeWindow.Close();
+            };
+
+            // Create a stack panel to hold the text block and the OK button
+            var stackPanel = new StackPanel();
+            stackPanel.Children.Add(recipeTextBlock);
+            stackPanel.Children.Add(okButton);
+
+            // Set the content of the recipe window as the stack panel
+            recipeWindow.Content = stackPanel;
 
             // Show the recipe window
             recipeWindow.ShowDialog();
@@ -156,8 +179,8 @@ namespace ST10203070_PROG6221_POE
             }
         }
 
-        //Method to display specific recipe based on users choice
-        public void DisplaySpecificRecipe(int recipeNumber, TextBlock recipeDetailsTextBlock)
+        // Method to display specific recipe based on user's choice
+        public void DisplaySpecificRecipe(int recipeNumber)
         {
             if (recipeDictionary.ContainsKey(recipeNumber))
             {
@@ -183,16 +206,46 @@ namespace ST10203070_PROG6221_POE
                 }
                 sb.AppendLine("----------------------------------------");
 
-                // Set the content of the recipeDetailsTextBlock with the recipe details
-                recipeDetailsTextBlock.Text = sb.ToString();
+                // Create a new Window to display the recipe details
+                var recipeDetailsWindow = new Window
+                {
+                    Title = "Recipe Details",
+                    Width = 400,
+                    Height = 300,
+                    Content = new StackPanel
+                    {
+                        Children =
+                        {
+                        new TextBlock { Text = sb.ToString() },
+                        new Button
+                        {
+                            Content = "OK",
+                            HorizontalAlignment = HorizontalAlignment.Center,
+                            Margin = new Thickness(0, 10, 0, 0)
+                        }
+                        }
+                    }
+                };
+
+                // Get the "OK" button from the StackPanel's Children collection
+                Button okButton = (Button)((StackPanel)recipeDetailsWindow.Content).Children[1];
+
+                // Set the click event handler for the "OK" button
+                okButton.Click += (sender, e) =>
+                {
+                    // Close the recipeDetailsWindow when the button is clicked
+                    recipeDetailsWindow.Close();
+                };
+
+                // Show the recipeDetailsWindow
+                recipeDetailsWindow.ShowDialog();
             }
             else
             {
                 // Handle the case where the recipe number is invalid
-                recipeDetailsTextBlock.Text = "Invalid recipe number. Please try again.";
+                MessageBox.Show("Invalid recipe number. Please try again.");
             }
         }
-
 
         //Method to calculate and return total calories
         public double CalculateTotalCalories(Recipe recipe)
