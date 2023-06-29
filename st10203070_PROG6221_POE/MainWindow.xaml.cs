@@ -504,27 +504,62 @@ namespace st10203070_PROG6221_POE
                         MessageBox.Show("Invalid input. Please enter a valid number for maximum calories.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                     }
                 };
-
+                // Create a new list box for recipe selection
+                ListBox recipeListBox = new ListBox()
+                {
+                    ItemsSource = Recipe.recipes,
+                    SelectionMode = SelectionMode.Multiple
+                };
                 var menuButton = new Button() { Content = "Select recipes for menu" };
                 menuButton.Click += (sender, e) =>
                 {
-                    // Create a list box or any other UI element to allow users to select recipes for the menu
-                    ListBox recipeListBox = new ListBox();
-
-                    // Populate the recipeListBox with available recipes
-
-                    // Show the menu selection message box and wait for the user to make selections
-                    MessageBoxResult result = MessageBox.Show("Select recipes for the menu", "Menu Selection", MessageBoxButton.OKCancel, MessageBoxImage.Information);
-
-                    if (result == MessageBoxResult.OK)
+                    // Create a new window for recipe selection
+                    Window recipeSelectionWindow = new Window()
                     {
-                        // Get the selected recipes from the recipeListBox
-                        List<Recipe> selectedRecipes = new List<Recipe>();
-                        foreach (Recipe recipe in recipeListBox.SelectedItems)
-                        {
-                            selectedRecipes.Add(recipe);
-                        }
+                        Title = "Recipe Selection",
+                        Width = 400,
+                        Height = 300,
+                        WindowStartupLocation = WindowStartupLocation.CenterScreen
+                    };
 
+                    // Create a stack panel to hold the checkboxes and confirm button
+                    StackPanel stackPanel = new StackPanel();
+
+                    // Create checkboxes for each recipe
+                    foreach (Recipe recipe in Recipe.recipes)
+                    {
+                        CheckBox recipeCheckBox = new CheckBox()
+                        {
+                            Content = recipe.RecipeName
+                        };
+
+                        stackPanel.Children.Add(recipeCheckBox);
+                    }
+
+                    // Create a button to confirm the recipe selection
+                    Button confirmButton = new Button
+                    {
+                        Content = "OK",
+                        Width = 100,
+                        Height = 30
+                    };
+
+                    // Handle the confirm button click event
+                    confirmButton.Click += (confirmSender, confirmEventArgs) =>
+                    {
+                        // Get the selected recipes from the checkboxes
+                        List<Recipe> selectedRecipes = new List<Recipe>();
+                        foreach (CheckBox checkBox in stackPanel.Children)
+                        {
+                            if (checkBox.IsChecked == true)
+                            {
+                                Recipe recipe = Recipe.recipes.FirstOrDefault(r => r.RecipeName == checkBox.Content.ToString());
+                                if (recipe != null)
+                                {
+                                    selectedRecipes.Add(recipe);
+                                }
+                            }
+                        }
                         // Calculate the total calories for the menu
                         double totalCalories = 0;
                         foreach (Recipe recipe in selectedRecipes)
@@ -592,7 +627,15 @@ namespace st10203070_PROG6221_POE
 
                         // Show the pie chart window
                         pieChartWindow.ShowDialog();
-                    }
+                    };
+
+                    // Adding confirmButton to stackPanel
+                    stackPanel.Children.Add(confirmButton);
+      
+                    recipeSelectionWindow.Content = stackPanel;
+
+                    // Show the recipe selection window
+                    recipeSelectionWindow.ShowDialog();
                 };
 
                 var exitButton = new Button() { Content = "Exit" };
