@@ -510,6 +510,7 @@ namespace st10203070_PROG6221_POE
                     ItemsSource = Recipe.recipes,
                     SelectionMode = SelectionMode.Multiple
                 };
+
                 var menuButton = new Button() { Content = "Select recipes for menu" };
                 menuButton.Click += (sender, e) =>
                 {
@@ -549,9 +550,9 @@ namespace st10203070_PROG6221_POE
                     {
                         // Get the selected recipes from the checkboxes
                         List<Recipe> selectedRecipes = new List<Recipe>();
-                        foreach (CheckBox checkBox in stackPanel.Children)
+                        foreach (var child in stackPanel.Children)
                         {
-                            if (checkBox.IsChecked == true)
+                            if (child is CheckBox checkBox && checkBox.IsChecked == true)
                             {
                                 Recipe recipe = Recipe.recipes.FirstOrDefault(r => r.RecipeName == checkBox.Content.ToString());
                                 if (recipe != null)
@@ -568,75 +569,216 @@ namespace st10203070_PROG6221_POE
                         }
 
                         // Calculate the food group percentages
-                        Dictionary<string, double> foodGroupPercentages = recipe.CalculateFoodGroupPercentages(selectedRecipes);
+                        Dictionary<string, double> foodGroupPercentages = Recipe.CalculateFoodGroupPercentages(selectedRecipes);
 
                         // Create a new window to display the pie chart
                         Window pieChartWindow = new Window()
                         {
                             Title = "Menu Pie Chart",
                             Width = 400,
-                            Height = 300,
+                            Height = 500,
                             WindowStartupLocation = WindowStartupLocation.CenterScreen
                         };
 
-                        // Create a Grid control to hold the pie chart
-                        Grid pieChartGrid = new Grid();
+                        // Create a Canvas control to hold the pie chart
+                        Canvas pieChartCanvas = new Canvas();
 
-                        // Create a single row and column for the pie chart
-                        pieChartGrid.RowDefinitions.Add(new RowDefinition());
-                        pieChartGrid.ColumnDefinitions.Add(new ColumnDefinition());
+                        // Set the size of the canvas
+                        pieChartCanvas.Width = 300;
+                        pieChartCanvas.Height = 300;
+
+                        // Set the alignment of the pieChartCanvas to center
+                        pieChartCanvas.HorizontalAlignment = HorizontalAlignment.Center;
+                        pieChartCanvas.VerticalAlignment = VerticalAlignment.Center;
+
+                        Dictionary<string, Color> foodGroupColors = new Dictionary<string, Color>()
+                        {
+                            { "Starchy foods", Colors.Green },
+                            { "Vegetables and fruits", Colors.Red },
+                            { "Dry beans, peas, lentils and soya", Colors.Yellow },
+                            { "Chicken, fish, meat and eggs", Colors.Blue },
+                            { "Milk and dairy products", Colors.Orange },
+                            { "Fats and oil", Colors.Gray },
+                            { "Water", Colors.Pink },
+                        };
 
                         // Calculate the angles for the pie slices
+                        double centerX = pieChartCanvas.Width / 2;
+                        double centerY = pieChartCanvas.Height / 2;
+                        double radius = Math.Min(centerX, centerY);
+
                         double startAngle = 0;
                         foreach (var kvp in foodGroupPercentages)
                         {
                             double sweepAngle = 360 * kvp.Value / 100;
 
+                            // Calculate the start and end points for the arc segment
+                            double startX = centerX + Math.Sin(startAngle * Math.PI / 180) * radius;
+                            double startY = centerY - Math.Cos(startAngle * Math.PI / 180) * radius;
+                            double endX = centerX + Math.Sin((startAngle + sweepAngle) * Math.PI / 180) * radius;
+                            double endY = centerY - Math.Cos((startAngle + sweepAngle) * Math.PI / 180) * radius;
+
+                            // Retrieve the color for the food group
+                            Color sliceColor = foodGroupColors[kvp.Key];
+
                             // Create a pie slice using a PathGeometry
                             PathGeometry sliceGeometry = new PathGeometry();
                             PathFigure sliceFigure = new PathFigure();
-                            sliceFigure.StartPoint = new Point(100, 100); // Center of the pie chart
-                            sliceFigure.Segments.Add(new LineSegment(new Point(100, 0), isStroked: true));
-
-                            // Calculate the end point for the arc segment
-                            double endAngle = startAngle + sweepAngle;
-                            double endX = 100 + Math.Sin(endAngle * Math.PI / 180) * 100;
-                            double endY = 100 - Math.Cos(endAngle * Math.PI / 180) * 100;
+                            sliceFigure.StartPoint = new Point(centerX, centerY); // Center of the pie chart
+                            sliceFigure.Segments.Add(new LineSegment(new Point(startX, startY), isStroked: true));
 
                             // Create an arc segment
-                            ArcSegment arcSegment = new ArcSegment(new Point(endX, endY), new Size(100, 100), 0, sweepAngle < 180, SweepDirection.Clockwise, true);
+                            ArcSegment arcSegment = new ArcSegment(new Point(endX, endY), new Size(radius, radius), 0, sweepAngle < 180, SweepDirection.Clockwise, true);
                             sliceFigure.Segments.Add(arcSegment);
                             sliceGeometry.Figures.Add(sliceFigure);
 
                             // Create a Path object to display the pie slice
                             Path slicePath = new Path()
                             {
-                                Fill = new SolidColorBrush(GetRandomColor()), // Random color for each slice
+                                Fill = new SolidColorBrush(sliceColor), // Random color for each slice
                                 Data = sliceGeometry
                             };
 
-                            // Add the slice path to the pie chart grid
-                            pieChartGrid.Children.Add(slicePath);
+                            // Add the slice path to the pie chart canvas
+                            pieChartCanvas.Children.Add(slicePath);
 
                             // Update the start angle for the next slice
                             startAngle += sweepAngle;
                         }
 
-                        // Add the pie chart grid to the pie chart window's content
-                        pieChartWindow.Content = pieChartGrid;
+                        // Create a ListBox control for the legend
+                        ListBox legendListBox = new ListBox();
+
+                        // Set the size and appearance of the legend
+                        legendListBox.Width = 200;
+                        legendListBox.Margin = new Thickness(10);
+                        legendListBox.BorderThickness = new Thickness(1);
+                        legendListBox.BorderBrush = Brushes.Black;
+
+                        // Add legend items to the ListBox
+                        foreach (var kvp in foodGroupPercentages)
+                        {
+                            string foodGroup = kvp.Key;
+                            double percentage = kvp.Value;
+                            Color color = foodGroupColors[foodGroup];
+
+                            // Create a StackPanel to hold the legend item
+                            StackPanel legendItemPanel = new StackPanel()
+                            {
+                                Orientation = Orientation.Horizontal,
+                                Margin = new Thickness(5)
+                            };
+
+                            // Create a Rectangle to display the color
+                            Rectangle colorRectangle = new Rectangle()
+                            {
+                                Width = 20,
+                                Height = 20,
+                                Fill = new SolidColorBrush(color),
+                                Margin = new Thickness(0, 0, 5, 0)
+                            };
+
+                            // Create a TextBlock to display the food group name and percentage
+                            TextBlock foodGroupTextBlock = new TextBlock()
+                            {
+                                Text = $"{foodGroup} ({percentage}%)"
+                            };
+
+                            // Add the color rectangle and food group text to the legend item panel
+                            legendItemPanel.Children.Add(colorRectangle);
+                            legendItemPanel.Children.Add(foodGroupTextBlock);
+
+                            // Add the legend item panel to the ListBox
+                            legendListBox.Items.Add(legendItemPanel);
+                        }
+
+                        // Create a Grid to hold the pie chart and legend
+                        Grid grid = new Grid();
+
+                        // Create a row definition for the pie chart
+                        RowDefinition pieChartRow = new RowDefinition();
+                        pieChartRow.Height = new GridLength(1, GridUnitType.Star);
+                        grid.RowDefinitions.Add(pieChartRow);
+
+                        // Create a row definition for the content
+                        RowDefinition contentRow = new RowDefinition();
+                        contentRow.Height = new GridLength(1, GridUnitType.Auto);
+                        grid.RowDefinitions.Add(contentRow);
+
+                        // Add the pie chart canvas to the grid
+                        Grid.SetRow(pieChartCanvas, 0);
+                        grid.Children.Add(pieChartCanvas);
+
+                        // Create a StackPanel to hold the legend and OK button
+                        StackPanel contentStackPanel = new StackPanel()
+                        { 
+                            HorizontalAlignment = HorizontalAlignment.Right,
+                            VerticalAlignment = VerticalAlignment.Top,
+                            Margin = new Thickness(0, 0, 10, 10)
+                        
+                        };
+
+                        // Update the alignment and margin to move the content to the left
+                        contentStackPanel.HorizontalAlignment = HorizontalAlignment.Left;
+                        contentStackPanel.Margin = new Thickness(65, 0, 10, 10); 
+
+                        // Add the legend ListBox to the content stack panel
+                        contentStackPanel.Children.Add(legendListBox);
+
+                        // Create a button to confirm and exit the PieChartWindow
+                        Button okButton = new Button()
+                        {
+                            Content = "OK",
+                            Width = 100,
+                            Height = 30,
+                            Margin = new Thickness(0, 10, 0, 0)
+                        };
+
+                        // Handle the OK button click event
+                        okButton.Click += (okSender, okEventArgs) =>
+                        {
+                            // Close the PieChartWindow
+                            pieChartWindow.Close();
+                        };
+
+                        // Add the OK button to the content stack panel
+                        contentStackPanel.Children.Add(okButton);
+
+                        // Add the content stack panel to the grid
+                        Grid.SetRow(contentStackPanel, 1);
+                        grid.Children.Add(contentStackPanel);
+
+                        // Create a Canvas to hold the grid
+                        Canvas canvas = new Canvas();
+
+                        // Set the desired margins for the pie chart
+                        Thickness pieChartMargin = new Thickness(20, 20, 0, 0); // Adjust the values as per your requirement
+
+                        // Set the margin for the pie chart canvas
+                        pieChartCanvas.Margin = pieChartMargin;
+
+                        // Add the grid to the canvas
+                        canvas.Children.Add(grid);
+
+                        // Set the canvas as the content of the pie chart window
+                        pieChartWindow.Content = canvas;
 
                         // Show the pie chart window
                         pieChartWindow.ShowDialog();
+
+                        // Close the recipe selection window
+                        recipeSelectionWindow.Close();
                     };
 
                     // Adding confirmButton to stackPanel
                     stackPanel.Children.Add(confirmButton);
-      
+
                     recipeSelectionWindow.Content = stackPanel;
 
                     // Show the recipe selection window
                     recipeSelectionWindow.ShowDialog();
                 };
+
 
                 var exitButton = new Button() { Content = "Exit" };
                 exitButton.Click += (sender, e) =>
@@ -698,19 +840,29 @@ namespace st10203070_PROG6221_POE
             MessageBox.Show($"The total calories of '{recipeName}' exceed 300 with a total of {totalCalories} calories.", "Calorie Exceeded");
         }
 
-        // Helper method to generate a random color
-        private Color GetRandomColor()
+        //Method to return food group colour
+        private Color GetFoodGroupColor(string foodGroup)
         {
-            Random random = new Random();
-            byte[] colorBytes = new byte[3];
-            random.NextBytes(colorBytes);
-            return Color.FromArgb(255, colorBytes[0], colorBytes[1], colorBytes[2]);
+            switch (foodGroup)
+            {
+                case "Starchy foods":
+                    return Colors.Green;
+                case "Vegetables and fruits":
+                    return Colors.Red;
+                case "Dry beans, peas, lentils and soya":
+                    return Colors.Yellow;
+                case "Chicken, fish, meat and eggs":
+                    return Colors.Blue;
+                case "Milk and dairy products":
+                    return Colors.Orange;
+                case "Fats and oil":
+                    return Colors.Gray;
+                case "Water":
+                    return Colors.Pink;
+                default:
+                    return Colors.Gray;
+            }
         }
     }
 }
 //---------------------------------------END OF FILE---------------------------------------//
-
-
-//FIX:
-//Selection of recipes for menu
-//Pie chart

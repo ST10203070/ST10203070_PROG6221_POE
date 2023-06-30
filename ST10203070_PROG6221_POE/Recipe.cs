@@ -277,7 +277,7 @@ namespace ST10203070_PROG6221_POE
         }
 
         // Method to calculate the food group percentages for the selected recipes
-        public Dictionary<string, double> CalculateFoodGroupPercentages(List<Recipe> recipes)
+        public static Dictionary<string, double> CalculateFoodGroupPercentages(List<Recipe> recipes)
         {
             Dictionary<string, double> foodGroupPercentages = new Dictionary<string, double>();
 
@@ -296,9 +296,10 @@ namespace ST10203070_PROG6221_POE
             }
 
             // Calculate the food group percentages
+            double totalQuantitySum = totalQuantities.Values.Sum();
             foreach (string foodGroup in totalQuantities.Keys)
             {
-                double percentage = (totalQuantities[foodGroup] / totalQuantities.Values.Sum()) * 100;
+                double percentage = (totalQuantities[foodGroup] / totalQuantitySum) * 100;
                 foodGroupPercentages[foodGroup] = percentage;
             }
 
