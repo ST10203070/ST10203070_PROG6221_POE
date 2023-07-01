@@ -561,12 +561,13 @@ namespace st10203070_PROG6221_POE
                                 }
                             }
                         }
-                        // Calculate the total calories for the menu
+/*                        // Calculate the total calories for the menu
                         double totalCalories = 0;
                         foreach (Recipe recipe in selectedRecipes)
                         {
                             totalCalories += recipe.CalculateTotalCalories(recipe);
                         }
+*/
 
                         // Calculate the food group percentages
                         Dictionary<string, double> foodGroupPercentages = Recipe.CalculateFoodGroupPercentages(selectedRecipes);
@@ -575,8 +576,8 @@ namespace st10203070_PROG6221_POE
                         Window pieChartWindow = new Window()
                         {
                             Title = "Menu Pie Chart",
-                            Width = 400,
-                            Height = 500,
+                            Width = 600,
+                            Height = 600,
                             WindowStartupLocation = WindowStartupLocation.CenterScreen
                         };
 
@@ -584,8 +585,9 @@ namespace st10203070_PROG6221_POE
                         Canvas pieChartCanvas = new Canvas();
 
                         // Set the size of the canvas
-                        pieChartCanvas.Width = 300;
-                        pieChartCanvas.Height = 300;
+                        double canvasSize = 300;
+                        pieChartCanvas.Width = canvasSize;
+                        pieChartCanvas.Height = canvasSize;
 
                         // Set the alignment of the pieChartCanvas to center
                         pieChartCanvas.HorizontalAlignment = HorizontalAlignment.Center;
@@ -603,9 +605,14 @@ namespace st10203070_PROG6221_POE
                         };
 
                         // Calculate the angles for the pie slices
-                        double centerX = pieChartCanvas.Width / 2;
-                        double centerY = pieChartCanvas.Height / 2;
-                        double radius = Math.Min(centerX, centerY);
+                        double centerX = canvasSize / 2;
+                        double centerY = canvasSize / 2;
+                        double radius = Math.Min(centerX, centerY) - 10;
+
+                        // Adjust the canvas size based on the smaller dimension
+                        canvasSize = Math.Min(pieChartCanvas.Width, pieChartCanvas.Height);
+                        pieChartCanvas.Width = canvasSize;
+                        pieChartCanvas.Height = canvasSize;
 
                         double startAngle = 0;
                         foreach (var kvp in foodGroupPercentages)
@@ -626,6 +633,7 @@ namespace st10203070_PROG6221_POE
                             PathFigure sliceFigure = new PathFigure();
                             sliceFigure.StartPoint = new Point(centerX, centerY); // Center of the pie chart
                             sliceFigure.Segments.Add(new LineSegment(new Point(startX, startY), isStroked: true));
+                            //sliceFigure.StartPoint = new Point(startX, startY); // Start point of the arc
 
                             // Create an arc segment
                             ArcSegment arcSegment = new ArcSegment(new Point(endX, endY), new Size(radius, radius), 0, sweepAngle < 180, SweepDirection.Clockwise, true);
@@ -779,7 +787,6 @@ namespace st10203070_PROG6221_POE
                     recipeSelectionWindow.ShowDialog();
                 };
 
-
                 var exitButton = new Button() { Content = "Exit" };
                 exitButton.Click += (sender, e) =>
                 {
@@ -791,7 +798,6 @@ namespace st10203070_PROG6221_POE
                     // Terminate the application
                     Application.Current.Shutdown();
                 };
-
 
                 // Add the buttons to a stack panel
                 var actionsStackPanel = new StackPanel()
@@ -835,6 +841,7 @@ namespace st10203070_PROG6221_POE
             }
         }
 
+        //Method to handle exceeded calories
         private void RecipeExceededCaloriesHandler(string recipeName, double totalCalories)
         {
             MessageBox.Show($"The total calories of '{recipeName}' exceed 300 with a total of {totalCalories} calories.", "Calorie Exceeded");
