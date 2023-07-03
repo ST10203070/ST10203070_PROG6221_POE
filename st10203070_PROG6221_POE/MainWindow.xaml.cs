@@ -1,24 +1,22 @@
 ﻿using ST10203070_PROG6221_POE;
-using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using OxyPlot;
+using System.Windows.Controls;
+using OxyPlot.Annotations;
+using OxyPlot.Series;
+using System.Runtime.CompilerServices;
+using System.Text;
+
+using SelectionMode = System.Windows.Controls.SelectionMode;
+using OxyPlot.Wpf;
 
 namespace st10203070_PROG6221_POE
 {
-    /// Interaction logic for MainWindow.xaml
-
-    public partial class MainWindow : Window
+    public partial class MainWindow : Window, INotifyPropertyChanged
     {
         //Variable holds number of ingredients
         public int numIngredients = 0;
@@ -34,15 +32,123 @@ namespace st10203070_PROG6221_POE
         public delegate void RecipeExceededCaloriesEventHandler(string recipeName, double totalCalories);
         //Declaring event of delegate type
         public event RecipeExceededCaloriesEventHandler RecipeExceededCaloriesEvent;
+        public event PropertyChangedEventHandler PropertyChanged;
 
+
+        // Property for the chart model
+        private PlotModel _chartModel;
+        public PlotModel ChartModel
+        {
+            get { return _chartModel; }
+            set
+            {
+                _chartModel = value;
+                OnPropertyChanged(nameof(ChartModel));
+            }
+        }
+
+        // Property for StarchyFoodsValues
+        private List<DataPoint> _starchyFoodsValues;
+        public List<DataPoint> StarchyFoodsValues
+        {
+            get { return _starchyFoodsValues; }
+            set { SetProperty(ref _starchyFoodsValues, value); }
+        }
+
+        // Property for VegetablesFruitsValues
+        private List<DataPoint> _vegetablesFruitsValues;
+        public List<DataPoint> VegetablesFruitsValues
+        {
+            get { return _vegetablesFruitsValues; }
+            set { SetProperty(ref _vegetablesFruitsValues, value); }
+        }
+
+        // Property for BeansPeasLentilsValues
+        private List<DataPoint> _beansPeasLentilsValues;
+        public List<DataPoint> BeansPeasLentilsValues
+        {
+            get { return _beansPeasLentilsValues; }
+            set { SetProperty(ref _beansPeasLentilsValues, value); }
+        }
+
+        // Property for MeatEggsValues
+        private List<DataPoint> _meatEggsValues;
+        public List<DataPoint> MeatEggsValues
+        {
+            get { return _meatEggsValues; }
+            set { SetProperty(ref _meatEggsValues, value); }
+        }
+
+        // Property for MilkDairyValues
+        private List<DataPoint> _milkDairyValues;
+        public List<DataPoint> MilkDairyValues
+        {
+            get { return _milkDairyValues; }
+            set { SetProperty(ref _milkDairyValues, value); }
+        }
+
+        // Property for FatsOilValues
+        private List<DataPoint> _fatsOilValues;
+        public List<DataPoint> FatsOilValues
+        {
+            get { return _fatsOilValues; }
+            set { SetProperty(ref _fatsOilValues, value); }
+        }
+
+        // Property for WaterValues
+        private List<DataPoint> _waterValues;
+        public List<DataPoint> WaterValues
+        {
+            get { return _waterValues; }
+            set { SetProperty(ref _waterValues, value); }
+        }
+
+        // Method to set property value and invoke OnPropertyChanged
+        protected void SetProperty<T>(ref T field, T value, [CallerMemberName] string propertyName = null)
+        {
+            if (!EqualityComparer<T>.Default.Equals(field, value))
+            {
+                field = value;
+                OnPropertyChanged(propertyName);
+            }
+        }
+
+        // Method to handle property changed event
+        protected virtual void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        //Default constructor
         public MainWindow()
         {
             InitializeComponent();
+
+            DataContext = this;
+
+            // Set the initial values for each food group
+            StarchyFoodsValues = new List<DataPoint> { new DataPoint(0, 3) };
+            VegetablesFruitsValues = new List<DataPoint> { new DataPoint(0, 3) };
+            BeansPeasLentilsValues = new List<DataPoint> { new DataPoint(0, 3) };
+            MeatEggsValues = new List<DataPoint> { new DataPoint(0, 3) };
+            MilkDairyValues = new List<DataPoint> { new DataPoint(0, 3) };
+            FatsOilValues = new List<DataPoint> { new DataPoint(0, 3) };
+            WaterValues = new List<DataPoint> { new DataPoint(0, 3) };
+
             recipe = new Recipe(recipeIDCounter, "");
             RecipeExceededCaloriesEvent += RecipeExceededCaloriesHandler;
             ActionsMenu(GetRecipeDetails());
         }
 
+        //Method to generate labels for data points
+        public string PointLabel(Annotation annotation, LineSeries series, int index)
+        {
+            // Implement the logic for generating the label for each data point
+            // You can customize the label format based on your requirements
+            return $"{series.Title}: {series.Points[index].Y}";
+        }
+
+        //Method to get recipe details from the user
         private Recipe GetRecipeDetails()
         {
             // Display a message box to welcome the user
@@ -50,7 +156,7 @@ namespace st10203070_PROG6221_POE
 
             // Request recipe name from the user using an input dialog
             string recipeName = Microsoft.VisualBasic.Interaction.InputBox("Enter the name of the recipe:", "Recipe Name");
-
+           
             // Create a new instance of the Recipe class
             Recipe recipe = new Recipe(recipeIDCounter, recipeName);
 
@@ -310,7 +416,7 @@ namespace st10203070_PROG6221_POE
                         Content = "Yes",
                         Width = 80,
                         Margin = new Thickness(20),
-                        HorizontalAlignment = HorizontalAlignment.Left
+                        HorizontalAlignment = System.Windows.HorizontalAlignment.Left
                     };
                     yesButton.Click += (confirmSender, confirmArgs) =>
                     {
@@ -341,7 +447,7 @@ namespace st10203070_PROG6221_POE
                         Content = "No",
                         Width = 80,
                         Margin = new Thickness(20),
-                        HorizontalAlignment = HorizontalAlignment.Right
+                        HorizontalAlignment = System.Windows.HorizontalAlignment.Right
                     };
                     noButton.Click += (confirmSender, confirmArgs) =>
                     {
@@ -351,7 +457,7 @@ namespace st10203070_PROG6221_POE
                     var buttonsStackPanel = new StackPanel()
                     {
                         Orientation = Orientation.Horizontal,
-                        HorizontalAlignment = HorizontalAlignment.Center,
+                        HorizontalAlignment = System.Windows.HorizontalAlignment.Center,
                         Margin = new Thickness(0, 20, 0, 0)
                     };
                     buttonsStackPanel.Children.Add(yesButton);
@@ -561,215 +667,82 @@ namespace st10203070_PROG6221_POE
                                 }
                             }
                         }
-/*                        // Calculate the total calories for the menu
-                        double totalCalories = 0;
-                        foreach (Recipe recipe in selectedRecipes)
-                        {
-                            totalCalories += recipe.CalculateTotalCalories(recipe);
-                        }
-*/
 
                         // Calculate the food group percentages
                         Dictionary<string, double> foodGroupPercentages = Recipe.CalculateFoodGroupPercentages(selectedRecipes);
 
-                        // Create a new window to display the pie chart
-                        Window pieChartWindow = new Window()
-                        {
-                            Title = "Menu Pie Chart",
-                            Width = 600,
-                            Height = 600,
-                            WindowStartupLocation = WindowStartupLocation.CenterScreen
-                        };
+                        // Update the chart values
+                        StarchyFoodsValues.Clear();
+                        VegetablesFruitsValues.Clear();
+                        BeansPeasLentilsValues.Clear();
+                        MeatEggsValues.Clear();
+                        MilkDairyValues.Clear();
+                        FatsOilValues.Clear();
+                        WaterValues.Clear();
 
-                        // Create a Canvas control to hold the pie chart
-                        Canvas pieChartCanvas = new Canvas();
-
-                        // Set the size of the canvas
-                        double canvasSize = 300;
-                        pieChartCanvas.Width = canvasSize;
-                        pieChartCanvas.Height = canvasSize;
-
-                        // Set the alignment of the pieChartCanvas to center
-                        pieChartCanvas.HorizontalAlignment = HorizontalAlignment.Center;
-                        pieChartCanvas.VerticalAlignment = VerticalAlignment.Center;
-
-                        Dictionary<string, Color> foodGroupColors = new Dictionary<string, Color>()
-                        {
-                            { "Starchy foods", Colors.Green },
-                            { "Vegetables and fruits", Colors.Red },
-                            { "Dry beans, peas, lentils and soya", Colors.Yellow },
-                            { "Chicken, fish, meat and eggs", Colors.Blue },
-                            { "Milk and dairy products", Colors.Orange },
-                            { "Fats and oil", Colors.Gray },
-                            { "Water", Colors.Pink },
-                        };
-
-                        // Calculate the angles for the pie slices
-                        double centerX = canvasSize / 2;
-                        double centerY = canvasSize / 2;
-                        double radius = Math.Min(centerX, centerY) - 10;
-
-                        // Adjust the canvas size based on the smaller dimension
-                        canvasSize = Math.Min(pieChartCanvas.Width, pieChartCanvas.Height);
-                        pieChartCanvas.Width = canvasSize;
-                        pieChartCanvas.Height = canvasSize;
-
-                        double startAngle = 0;
-                        foreach (var kvp in foodGroupPercentages)
-                        {
-                            double sweepAngle = 360 * kvp.Value / 100;
-
-                            // Calculate the start and end points for the arc segment
-                            double startX = centerX + Math.Sin(startAngle * Math.PI / 180) * radius;
-                            double startY = centerY - Math.Cos(startAngle * Math.PI / 180) * radius;
-                            double endX = centerX + Math.Sin((startAngle + sweepAngle) * Math.PI / 180) * radius;
-                            double endY = centerY - Math.Cos((startAngle + sweepAngle) * Math.PI / 180) * radius;
-
-                            // Retrieve the color for the food group
-                            Color sliceColor = foodGroupColors[kvp.Key];
-
-                            // Create a pie slice using a PathGeometry
-                            PathGeometry sliceGeometry = new PathGeometry();
-                            PathFigure sliceFigure = new PathFigure();
-                            sliceFigure.StartPoint = new Point(centerX, centerY); // Center of the pie chart
-                            sliceFigure.Segments.Add(new LineSegment(new Point(startX, startY), isStroked: true));
-                            //sliceFigure.StartPoint = new Point(startX, startY); // Start point of the arc
-
-                            // Create an arc segment
-                            ArcSegment arcSegment = new ArcSegment(new Point(endX, endY), new Size(radius, radius), 0, sweepAngle < 180, SweepDirection.Clockwise, true);
-                            sliceFigure.Segments.Add(arcSegment);
-                            sliceGeometry.Figures.Add(sliceFigure);
-
-                            // Create a Path object to display the pie slice
-                            Path slicePath = new Path()
-                            {
-                                Fill = new SolidColorBrush(sliceColor), // Random color for each slice
-                                Data = sliceGeometry
-                            };
-
-                            // Add the slice path to the pie chart canvas
-                            pieChartCanvas.Children.Add(slicePath);
-
-                            // Update the start angle for the next slice
-                            startAngle += sweepAngle;
-                        }
-
-                        // Create a ListBox control for the legend
-                        ListBox legendListBox = new ListBox();
-
-                        // Set the size and appearance of the legend
-                        legendListBox.Width = 200;
-                        legendListBox.Margin = new Thickness(10);
-                        legendListBox.BorderThickness = new Thickness(1);
-                        legendListBox.BorderBrush = Brushes.Black;
-
-                        // Add legend items to the ListBox
                         foreach (var kvp in foodGroupPercentages)
                         {
                             string foodGroup = kvp.Key;
                             double percentage = kvp.Value;
-                            Color color = foodGroupColors[foodGroup];
 
-                            // Create a StackPanel to hold the legend item
-                            StackPanel legendItemPanel = new StackPanel()
+                            switch (foodGroup)
                             {
-                                Orientation = Orientation.Horizontal,
-                                Margin = new Thickness(5)
-                            };
-
-                            // Create a Rectangle to display the color
-                            Rectangle colorRectangle = new Rectangle()
-                            {
-                                Width = 20,
-                                Height = 20,
-                                Fill = new SolidColorBrush(color),
-                                Margin = new Thickness(0, 0, 5, 0)
-                            };
-
-                            // Create a TextBlock to display the food group name and percentage
-                            TextBlock foodGroupTextBlock = new TextBlock()
-                            {
-                                Text = $"{foodGroup} ({percentage}%)"
-                            };
-
-                            // Add the color rectangle and food group text to the legend item panel
-                            legendItemPanel.Children.Add(colorRectangle);
-                            legendItemPanel.Children.Add(foodGroupTextBlock);
-
-                            // Add the legend item panel to the ListBox
-                            legendListBox.Items.Add(legendItemPanel);
+                                case "Starchy foods":
+                                    StarchyFoodsValues.Add(new DataPoint(0, percentage));
+                                    break;
+                                case "Vegetables and fruits":
+                                    VegetablesFruitsValues.Add(new DataPoint(0, percentage));
+                                    break;
+                                case "Dry beans, peas, lentils and soya":
+                                    BeansPeasLentilsValues.Add(new DataPoint(0, percentage));
+                                    break;
+                                case "Chicken, fish, meat and eggs":
+                                    MeatEggsValues.Add(new DataPoint(0, percentage));
+                                    break;
+                                case "Milk and dairy products":
+                                    MilkDairyValues.Add(new DataPoint(0, percentage));
+                                    break;
+                                case "Fats and oil":
+                                    FatsOilValues.Add(new DataPoint(0, percentage));
+                                    break;
+                                case "Water":
+                                    WaterValues.Add(new DataPoint(0, percentage));
+                                    break;
+                                default:
+                                    break;
+                            }
                         }
 
-                        // Create a Grid to hold the pie chart and legend
-                        Grid grid = new Grid();
+                        // Create and show the pie chart
+                        var pieModel = new PlotModel { Title = "Food Group Percentages" };
 
-                        // Create a row definition for the pie chart
-                        RowDefinition pieChartRow = new RowDefinition();
-                        pieChartRow.Height = new GridLength(1, GridUnitType.Star);
-                        grid.RowDefinitions.Add(pieChartRow);
+                        var pieSeries = new PieSeries();
 
-                        // Create a row definition for the content
-                        RowDefinition contentRow = new RowDefinition();
-                        contentRow.Height = new GridLength(1, GridUnitType.Auto);
-                        grid.RowDefinitions.Add(contentRow);
+                        if (StarchyFoodsValues.Count > 0)
+                            pieSeries.Slices.Add(new PieSlice("Starchy foods", StarchyFoodsValues[0].Y));
+                        if (VegetablesFruitsValues.Count > 0)
+                            pieSeries.Slices.Add(new PieSlice("Vegetables and fruits", VegetablesFruitsValues[0].Y));
+                        if (BeansPeasLentilsValues.Count > 0)
+                            pieSeries.Slices.Add(new PieSlice("Dry beans, peas, lentils and soya", BeansPeasLentilsValues[0].Y));
+                        if (MeatEggsValues.Count > 0)
+                            pieSeries.Slices.Add(new PieSlice("Chicken, fish, meat and eggs", MeatEggsValues[0].Y));
+                        if (MilkDairyValues.Count > 0)
+                            pieSeries.Slices.Add(new PieSlice("Milk and dairy products", MilkDairyValues[0].Y));
+                        if (FatsOilValues.Count > 0)
+                            pieSeries.Slices.Add(new PieSlice("Fats and oil", FatsOilValues[0].Y));
+                        if (WaterValues.Count > 0)
+                            pieSeries.Slices.Add(new PieSlice("Water", WaterValues[0].Y));
 
-                        // Add the pie chart canvas to the grid
-                        Grid.SetRow(pieChartCanvas, 0);
-                        grid.Children.Add(pieChartCanvas);
+                        pieModel.Series.Add(pieSeries);
 
-                        // Create a StackPanel to hold the legend and OK button
-                        StackPanel contentStackPanel = new StackPanel()
-                        { 
-                            HorizontalAlignment = HorizontalAlignment.Right,
-                            VerticalAlignment = VerticalAlignment.Top,
-                            Margin = new Thickness(0, 0, 10, 10)
-                        
-                        };
-
-                        // Update the alignment and margin to move the content to the left
-                        contentStackPanel.HorizontalAlignment = HorizontalAlignment.Left;
-                        contentStackPanel.Margin = new Thickness(65, 0, 10, 10); 
-
-                        // Add the legend ListBox to the content stack panel
-                        contentStackPanel.Children.Add(legendListBox);
-
-                        // Create a button to confirm and exit the PieChartWindow
-                        Button okButton = new Button()
+                        var pieChartWindow = new Window
                         {
-                            Content = "OK",
-                            Width = 100,
-                            Height = 30,
-                            Margin = new Thickness(0, 10, 0, 0)
+                            Title = "Food Group Percentages",
+                            Width = 550,
+                            Height = 600,
+                            Content = new PlotView { Model = pieModel },
+                            WindowStartupLocation = WindowStartupLocation.CenterScreen
                         };
-
-                        // Handle the OK button click event
-                        okButton.Click += (okSender, okEventArgs) =>
-                        {
-                            // Close the PieChartWindow
-                            pieChartWindow.Close();
-                        };
-
-                        // Add the OK button to the content stack panel
-                        contentStackPanel.Children.Add(okButton);
-
-                        // Add the content stack panel to the grid
-                        Grid.SetRow(contentStackPanel, 1);
-                        grid.Children.Add(contentStackPanel);
-
-                        // Create a Canvas to hold the grid
-                        Canvas canvas = new Canvas();
-
-                        // Set the desired margins for the pie chart
-                        Thickness pieChartMargin = new Thickness(20, 20, 0, 0); // Adjust the values as per your requirement
-
-                        // Set the margin for the pie chart canvas
-                        pieChartCanvas.Margin = pieChartMargin;
-
-                        // Add the grid to the canvas
-                        canvas.Children.Add(grid);
-
-                        // Set the canvas as the content of the pie chart window
-                        pieChartWindow.Content = canvas;
 
                         // Show the pie chart window
                         pieChartWindow.ShowDialog();

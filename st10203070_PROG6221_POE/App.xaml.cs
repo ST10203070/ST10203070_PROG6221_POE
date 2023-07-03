@@ -13,12 +13,6 @@ namespace st10203070_PROG6221_POE
     /// </summary>
     public partial class App : Application
     {
-        [STAThread]
-        public static void Main()
-        {
-            App app = new App();
-            MainWindow mainWindow = new MainWindow();
-            app.Run(mainWindow);
-        }
+
     }
 }
