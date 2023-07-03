@@ -1,8 +1,8 @@
 Instructions to compile:
 
 1. Ensure you have Visual Studio installed on your device. 
-2. Extract the folder labelled 'ST10203070_PROG6221_POE' from the ZIP file labelled 'MaxWalsh_ST10203070_PROG6221_Part2'. 
-3. Open the Visual Studio Solution file labelled 'ST10203070_PROG6221_POE.sln' in the extracted folder with Visual Studio. 
+2. Extract the folder labelled 'st10203070_PROG6221_POE' from the ZIP file labelled 'MaxWalsh_ST10203070_PROG6221_POE'. 
+3. Open the Visual Studio Solution file labelled 'st10203070_PROG6221_POE.sln' in the extracted folder with Visual Studio. 
 4. Set the build configuration in Visual Studio to debug.
 5. Click the 'Build Solution' button or use the keyboard shortcut (Ctrl+Shift+B).
 6. Monitor the build output in the output window. Resolve any issues that show during the build.
@@ -11,11 +11,11 @@ Instructions to compile:
 
 Instructions to run:
 
-1. After a successful build locate the compiled executable file labelled 'ST10203070_PROG6221_POE' in the project directory in file explorer. Follow ST10203070_PROG6221_POE\ST10203070_PROG6221_POE\bin\Debug\net6.0\
+1. After a successful build locate the compiled executable file labelled 'st10203070_PROG6221_POE' in the project directory in file explorer. Follow st10203070_PROG6221_POE\st10203070_PROG6221_POE\bin\Debug\net7.0-windows\
 2. Execute the compiled executable file by double-clicking on it. 
 3. Once running, follow the user interface. Interact with the software by responding to the prompts. 
 4. View the output of the software in the console. 
-6. When ready exit the software by responding with '6' to the menu or simply close the console window at the top right. 
+6. When ready exit the software by clicking 'Exit' in the menu or simply close the console window at the top right. 
 
 
 GitHub repository:

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 
-namespace ST10203070_PROG6221_POE
+namespace st10203070_PROG6221_POE
 {
     public class Recipe
     {

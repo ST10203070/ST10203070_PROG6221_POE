@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ST10203070_PROG6221_POE
+namespace st10203070_PROG6221_POE
 {
     public class Ingredient
     {

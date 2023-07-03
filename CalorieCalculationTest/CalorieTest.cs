@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using ST10203070_PROG6221_POE;
+using st10203070_PROG6221_POE;
 
-namespace ST10203070_PROG6221_POE.Tests
+namespace st10203070_PROG6221_POE.Tests
 {
     [TestClass]
     public class CalorieTest

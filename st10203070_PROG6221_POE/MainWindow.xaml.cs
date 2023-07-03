@@ -1,5 +1,4 @@
-﻿using ST10203070_PROG6221_POE;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows;
@@ -10,7 +9,6 @@ using OxyPlot.Annotations;
 using OxyPlot.Series;
 using System.Runtime.CompilerServices;
 using System.Text;
-
 using SelectionMode = System.Windows.Controls.SelectionMode;
 using OxyPlot.Wpf;
 

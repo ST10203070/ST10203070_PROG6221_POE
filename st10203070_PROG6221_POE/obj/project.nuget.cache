@@ -1,12 +1,21 @@
 {
   "version": 2,
-  "dgSpecHash": "OXuVmw+6RzAe5GIrQk7uVzI2AdTpYfX5W7n9YqseA4YjSIov5FMKwMQ2x5wDo6+FTaGC4bmzVx8YD3T9fpYEkg==",
+  "dgSpecHash": "htdmEC9JVpvY9L0ZKnOTFTFTXyya5FhV8l7jdhpPoHdQnDRjzh8eA+XICNRXsTOnJZr7LqIqRrAy2L7+9VPFiw==",
   "success": true,
   "projectFilePath": "C:\\Users\\maxgw\\OneDrive\\Documents\\VC\\SEMESTER 3\\PROG6221\\POE\\MaxWalsh_ST10203070_PROG6221_POE\\st10203070_PROG6221_POE\\st10203070_PROG6221_POE\\st10203070_PROG6221_POE.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\maxgw\\.nuget\\packages\\microsoft.codecoverage\\17.6.3\\microsoft.codecoverage.17.6.3.nupkg.sha512",
+    "C:\\Users\\maxgw\\.nuget\\packages\\microsoft.net.test.sdk\\17.6.3\\microsoft.net.test.sdk.17.6.3.nupkg.sha512",
+    "C:\\Users\\maxgw\\.nuget\\packages\\microsoft.testplatform.objectmodel\\17.6.3\\microsoft.testplatform.objectmodel.17.6.3.nupkg.sha512",
+    "C:\\Users\\maxgw\\.nuget\\packages\\microsoft.testplatform.testhost\\17.6.3\\microsoft.testplatform.testhost.17.6.3.nupkg.sha512",
+    "C:\\Users\\maxgw\\.nuget\\packages\\mstest.testadapter\\3.0.4\\mstest.testadapter.3.0.4.nupkg.sha512",
+    "C:\\Users\\maxgw\\.nuget\\packages\\mstest.testframework\\3.0.4\\mstest.testframework.3.0.4.nupkg.sha512",
+    "C:\\Users\\maxgw\\.nuget\\packages\\newtonsoft.json\\13.0.1\\newtonsoft.json.13.0.1.nupkg.sha512",
+    "C:\\Users\\maxgw\\.nuget\\packages\\nuget.frameworks\\6.5.0\\nuget.frameworks.6.5.0.nupkg.sha512",
     "C:\\Users\\maxgw\\.nuget\\packages\\oxyplot.core\\2.1.2\\oxyplot.core.2.1.2.nupkg.sha512",
     "C:\\Users\\maxgw\\.nuget\\packages\\oxyplot.wpf\\2.1.2\\oxyplot.wpf.2.1.2.nupkg.sha512",
-    "C:\\Users\\maxgw\\.nuget\\packages\\oxyplot.wpf.shared\\2.1.2\\oxyplot.wpf.shared.2.1.2.nupkg.sha512"
+    "C:\\Users\\maxgw\\.nuget\\packages\\oxyplot.wpf.shared\\2.1.2\\oxyplot.wpf.shared.2.1.2.nupkg.sha512",
+    "C:\\Users\\maxgw\\.nuget\\packages\\system.reflection.metadata\\1.6.0\\system.reflection.metadata.1.6.0.nupkg.sha512"
   ],
   "logs": []
 }
