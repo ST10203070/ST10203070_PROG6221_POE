@@ -24,4 +24,4 @@ https://github.com/ST10203070/ST10203070_PROG6221_POE
 
 Changes based on the lecturer's feedback:
 
-Given the lecturer's feedback, I changed the main method of the Program class. I broke the tasks up into methods to limit the amount of code in the main method. The main method now has one object instantiation and two method calls. I also fixed all the logical issues that were present in the code. There were many warnings that I had not addressed in Part 1. Finally, I made sure the software displays the data which was an issue due to the logical errors. 
+Given the lecturer's feedback, I put my code logic into the MainWindow.xaml.cs file instead of the Program.cs file. I have also implemented user validation for certain actions. For example, clearing recipes, adding recipes, displaying specific recipe, filtering recipes, and scaling recipes. 

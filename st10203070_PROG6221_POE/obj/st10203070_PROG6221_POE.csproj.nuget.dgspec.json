@@ -48,10 +48,6 @@
               "target": "Package",
               "version": "[3.0.4, )"
             },
-            "Microsoft.NET.Test.Sdk": {
-              "target": "Package",
-              "version": "[17.6.3, )"
-            },
             "OxyPlot.Wpf": {
               "target": "Package",
               "version": "[2.1.2, )"
