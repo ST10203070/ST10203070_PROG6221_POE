@@ -158,9 +158,6 @@ namespace st10203070_PROG6221_POE
             // Create a new instance of the Recipe class
             Recipe recipe = new Recipe(recipeIDCounter, recipeName);
 
-            // Increment the recipeIDCounter
-            recipeIDCounter++;
-
             // Request number of ingredients from the user using an input dialog
             string numIngredientsInput = Microsoft.VisualBasic.Interaction.InputBox($"Enter the number of ingredients for '{recipeName}':", "Number of Ingredients");
             this.numIngredients = int.Parse(numIngredientsInput);
@@ -267,6 +264,9 @@ namespace st10203070_PROG6221_POE
 
             // Add the recipe to the recipeDictionary
             recipe.recipeDictionary.Add(recipe.RecipeID, recipe);
+
+            // Increment the recipeIDCounter
+            recipeIDCounter++;
 
             // If the total calories exceed 300, raise the RecipeExceededCaloriesEvent
             if (recipe.CalculateTotalCalories(recipe) > 300)
